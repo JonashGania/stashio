@@ -30,7 +30,7 @@ export default {
             return null;
           }
 
-          return { id: user.id, email: user.email };
+          return { id: user.id, email: user.email, name: user.name };
         } catch (error) {
           console.error("Authentication error", error);
           return null;
@@ -56,6 +56,25 @@ export default {
       }
 
       return isLoggedIn;
+    },
+    jwt({ token, user, trigger, session }) {
+      if (user) {
+        token.id = user.id;
+        token.name = user.name;
+      }
+
+      if (trigger === "update" && session) {
+        token = { ...token, ...session };
+      }
+
+      return token;
+    },
+    session({ session, token }) {
+      if (session.user) {
+        session.user.id = token.id as string;
+        session.user.name = token.name as string;
+      }
+      return session;
     },
   },
   pages: {
