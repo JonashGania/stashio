@@ -2,9 +2,10 @@
 
 import { signIn, signOut } from "@/auth";
 import { prisma } from "@/lib/prisma";
-import { RegisterSchema } from "@/schemas";
+import { LoginSchema, RegisterSchema } from "@/schemas";
 import { z, ZodError } from "zod";
 import bcrypt from "bcryptjs";
+import { AuthError } from "next-auth";
 
 export const getUserFromDb = async (email: string) => {
   const user = await prisma.user.findUnique({
@@ -70,5 +71,41 @@ export const register = async (data: z.infer<typeof RegisterSchema>) => {
       success: false,
       message: "An unexpected error occured. Please try again later.",
     };
+  }
+};
+
+export const login = async (data: z.infer<typeof LoginSchema>) => {
+  try {
+    const { email, password } = await LoginSchema.parseAsync(data);
+
+    const user = await getUserFromDb(email);
+    if (!user || !user.password) {
+      return { error: "This email does not exist." };
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      return { error: "Password is incorrect" };
+    }
+
+    await signIn("credentials", {
+      email,
+      password,
+      redirect: false,
+    });
+
+    return { message: "Login successful" };
+  } catch (error) {
+    if (error instanceof AuthError) {
+      if (error.type === "CredentialsSignin") {
+        return { error: "Invalid credentials" };
+      } else {
+        return {
+          error: "An unexpected error occured. Please try again later.",
+        };
+      }
+    }
+
+    throw error;
   }
 };
