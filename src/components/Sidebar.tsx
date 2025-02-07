@@ -14,6 +14,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { navItems } from "@/constants";
 import { usePathname } from "next/navigation";
+import StorageChart from "./StorageChart";
 
 const Sidebars = () => {
   const pathname = usePathname();
@@ -26,8 +27,8 @@ const Sidebars = () => {
           <span className="font-medium text-2xl mt-2 mt-">Stashio</span>
         </Link>
       </SidebarHeader>
-      <SidebarContent>
-        <SidebarGroup className="px-5">
+      <SidebarContent className="px-5">
+        <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
               {navItems.map((item) => (
@@ -35,10 +36,10 @@ const Sidebars = () => {
                   <SidebarMenuButton asChild>
                     <Link
                       href={item.url}
-                      className={`px-4 py-5 rounded-[25px]  ${
+                      className={`px-4 py-5 rounded-[25px] ${
                         pathname === item.url
                           ? "bg-violet-500 hover:bg-violet-500"
-                          : "bg-white hover:bg-zinc-200"
+                          : "bg-white hover:bg-violet-100"
                       }`}
                     >
                       <Image
@@ -68,7 +69,11 @@ const Sidebars = () => {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
-        <SidebarGroup></SidebarGroup>
+        <SidebarGroup>
+          <SidebarContent className="gap-0">
+            {/* <StorageChart /> */}
+          </SidebarContent>
+        </SidebarGroup>
       </SidebarContent>
     </Sidebar>
   );
