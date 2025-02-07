@@ -9,6 +9,7 @@ import { Form, FormControl, FormItem, FormField, FormMessage } from "./ui/form";
 import { Button } from "./ui/button";
 import { register } from "@/actions/auth";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import ClipLoader from "react-spinners/ClipLoader";
 
 const SignUpForm = () => {
@@ -23,12 +24,15 @@ const SignUpForm = () => {
     },
   });
 
+  const router = useRouter();
+
   const onSubmit = async (data: z.infer<typeof RegisterSchema>) => {
     const response = await register(data);
 
     if (!response.success) {
       setGlobalError(response.message);
     } else {
+      router.push("/sign-in");
       form.reset();
       setGlobalError(null);
     }
