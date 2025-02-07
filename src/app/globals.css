@@ -90,3 +90,9 @@
 .nav-icon-active {
   @apply invert-0 opacity-100 !important;
 }
+
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 1rem;
+}
