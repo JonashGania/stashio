@@ -1,4 +1,4 @@
-import { Search, Moon, ChevronDown } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { auth } from "@/auth";
 import {
   DropdownMenu,
@@ -6,28 +6,22 @@ import {
   DropdownMenuContent,
 } from "./ui/dropdown-menu";
 import Avatar from "./Avatar";
-import SignOutButton from "./SignOutButton";
+import Searchbar from "./Searchbar";
+import UploadButton from "./buttons/UploadButton";
+import SignOutButton from "./buttons/SignOutButton";
+import ThemeButton from "./buttons/ThemeButton";
 
 const Header = async () => {
   const session = await auth();
   const user = session?.user;
 
   return (
-    <header className="w-full flex justify-between py-3 pr-6">
-      <div className="max-w-[480px] flex items-center gap-2 w-full px-3 py-3 rounded-3xl border border-transparent focus-within:border-blue-400 bg-[rgba(207,250,254,0.5)]">
-        <Search color="rgba(113,113,122)" size={20} />
-        <input
-          type="text"
-          placeholder="Type here to seach..."
-          className="flex-1 bg-transparent text-zinc-700 placeholder:text-zinc-500 focus:outline-none"
-        />
-      </div>
+    <header className="w-full flex justify-between py-3 px-6">
+      <Searchbar />
+
       <div className="flex gap-4 items-center">
-        <div className="w-[30px] h-[30px]">
-          <button className="px-1 py-1 rounded-full border transition-all border-zinc-300 hover:bg-zinc-200">
-            <Moon color="#71717a" size={20} />
-          </button>
-        </div>
+        <UploadButton />
+        <ThemeButton />
 
         <DropdownMenu>
           <DropdownMenuTrigger className="flex items-center gap-1 rounded-xl hover:bg-zinc-200 pr-1 outline-none">
