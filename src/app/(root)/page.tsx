@@ -9,7 +9,7 @@ const Dashboard = () => {
 
   return (
     <div className="pt-8 px-5 w-full">
-      <div className="flex gap-4">
+      <div className="flex gap-12 lg:gap-4">
         <div className="flex-1">
           <h3 className="text-zinc-600 font-semibold text-xl">Categories</h3>
           <div className="pt-4 categories-grid">
@@ -26,7 +26,7 @@ const Dashboard = () => {
             </p>
           </div>
         </div>
-        <div className="w-[350px] px-12">
+        <div className="w-[30%] lg:w-[350px] lg:px-12">
           <StorageChart />
         </div>
       </div>

@@ -15,7 +15,8 @@ model User {
     password      String?
     image         String?
     accounts      Account[]
-    sessions      Session[]
+    files         File[]
+    storage       Storage?
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -42,11 +43,34 @@ model Account {
     @@id([provider, providerAccountId])
 }
 
-model Session {
-    sessionToken String   @unique
-    userId       String
-    expires      DateTime
-    user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+model File {
+    id       String   @id @default(cuid())
+    name     String
+    type     String
+    size     Int
+    fileUrl  String
+    category FileType
+    fileId   String
+    userId   String
+    user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+enum FileType {
+    DOCUMENT
+    IMAGES
+    MEDIA
+    OTHER
+}
+
+model Storage {
+    id         String @id @default(cuid())
+    userId     String @unique
+    user       User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+    totalSpace BigInt @default(5368709120)
+    usedSpace  BigInt @default(0)
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt

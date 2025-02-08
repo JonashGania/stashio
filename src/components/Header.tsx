@@ -16,7 +16,7 @@ const Header = async () => {
   const user = session?.user;
 
   return (
-    <header className="w-full flex justify-between py-3 px-6">
+    <header className="w-full flex gap-4 justify-between py-3 px-6">
       <Searchbar />
 
       <div className="flex gap-4 items-center">
