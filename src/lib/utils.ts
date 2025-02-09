@@ -1,5 +1,6 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { FileType } from "@prisma/client";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -45,7 +46,7 @@ export const getCategories = () => {
 export const getFileType = (filename: string) => {
   const extension = filename.split(".").pop()?.toLowerCase();
 
-  if (!extension) return { type: "other", extension: "" };
+  if (!extension) return { type: FileType.OTHER, extension: "" };
 
   const documentExtensions = [
     "doc",
@@ -76,14 +77,62 @@ export const getFileType = (filename: string) => {
     "aac",
   ];
 
-  let type = "other";
+  let type: FileType = FileType.OTHER;
   if (documentExtensions.includes(extension)) {
-    type = "document";
+    type = FileType.DOCUMENT;
   } else if (imageExtensions.includes(extension)) {
-    type = "image";
+    type = FileType.IMAGES;
   } else if (mediaExtensions.includes(extension)) {
-    type = "media";
+    type = FileType.MEDIA;
   }
 
   return { type, extension };
+};
+
+export const getFileIcon = (type: FileType, extension: string) => {
+  const audioExtensions = ["mp3", "wav", "ogg", "aac"];
+  const videoExtensions = ["mp4", "webm", "mov", "avi", "mkv", "wmv", "flv"];
+
+  const iconMap: Record<string, string> = {
+    doc: "/assets/file-icons/doc.svg",
+    docx: "/assets/file-icons/docx.svg",
+    ppt: "/assets/file-icons/ppt.svg",
+    pptx: "/assets/file-icons/ppt.svg",
+    pdf: "/assets/file-icons/pdf.svg",
+    txt: "/assets/file-icons/txt.svg",
+    xls: "/assets/file-icons/excel.svg",
+    xlsx: "/assets/file-icons/excel.svg",
+    fileDocument: "/assets/file-icons/file-document.svg",
+    fileImage: "/assets/file-icons/file-image.svg",
+    fileVideo: "/assets/file-icons/file-video.svg",
+    fileAudio: "/assets/file-icons/file-audio.svg",
+    fileOther: "/assets/file-icons/file-other.svg",
+  };
+
+  if (iconMap[extension]) {
+    return iconMap[extension];
+  }
+
+  if (videoExtensions.includes(extension)) {
+    return iconMap.fileVideo;
+  }
+
+  if (audioExtensions.includes(extension)) {
+    return iconMap.fileAudio;
+  }
+
+  switch (type) {
+    case FileType.DOCUMENT:
+      return iconMap.fileDocument;
+    case FileType.IMAGES:
+      return iconMap.fileImage;
+    case FileType.MEDIA:
+      return iconMap.fileVideo;
+    default:
+      return iconMap.fileOther;
+  }
+};
+
+export const getFileUrl = (bucketFileId: string) => {
+  return `${process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT}/storage/buckets/${process.env.NEXT_PUBLIC_APPWRITE_BUCKET}/files/${bucketFileId}/view?project=${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`;
 };
