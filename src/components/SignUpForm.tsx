@@ -10,7 +10,7 @@ import { Button } from "./ui/button";
 import { register } from "@/actions/auth";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import ClipLoader from "react-spinners/ClipLoader";
+import { LoaderCircle } from "lucide-react";
 
 const SignUpForm = () => {
   const [globalError, setGlobalError] = useState<string | null>(null);
@@ -99,7 +99,12 @@ const SignUpForm = () => {
             disabled={form.formState.isSubmitting}
           >
             {form.formState.isSubmitting ? (
-              <ClipLoader size={20} color="#ffffff" />
+              <LoaderCircle
+                size={23}
+                color="#ffffff"
+                strokeWidth={3}
+                className="animate-spin"
+              />
             ) : (
               <span>Create account</span>
             )}
