@@ -46,19 +46,11 @@ export const register = async (data: z.infer<typeof RegisterSchema>) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const user = await prisma.user.create({
+    await prisma.user.create({
       data: {
         name: name,
         email: email.toLowerCase(),
         password: hashedPassword,
-      },
-    });
-
-    await prisma.storage.create({
-      data: {
-        userId: user.id,
-        totalSpace: BigInt(5368709120),
-        usedSpace: BigInt(0),
       },
     });
 

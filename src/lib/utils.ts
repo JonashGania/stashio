@@ -81,7 +81,7 @@ export const getFileType = (filename: string) => {
   if (documentExtensions.includes(extension)) {
     type = FileType.DOCUMENT;
   } else if (imageExtensions.includes(extension)) {
-    type = FileType.IMAGES;
+    type = FileType.IMAGE;
   } else if (mediaExtensions.includes(extension)) {
     type = FileType.MEDIA;
   }
@@ -124,7 +124,7 @@ export const getFileIcon = (type: FileType, extension: string) => {
   switch (type) {
     case FileType.DOCUMENT:
       return iconMap.fileDocument;
-    case FileType.IMAGES:
+    case FileType.IMAGE:
       return iconMap.fileImage;
     case FileType.MEDIA:
       return iconMap.fileVideo;

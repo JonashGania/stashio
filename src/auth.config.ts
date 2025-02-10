@@ -9,7 +9,10 @@ const authRoutes = ["/sign-in", "sign-up"];
 
 export default {
   providers: [
-    Google,
+    Google({
+      clientId: process.env.AUTH_GOOGLE_ID!,
+      clientSecret: process.env.AUTH_GOOGLE_SECRET!,
+    }),
     Credentials({
       credentials: {
         name: {},

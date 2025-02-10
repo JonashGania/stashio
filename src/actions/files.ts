@@ -7,6 +7,7 @@ import { ID } from "node-appwrite";
 import { InputFile } from "node-appwrite/file";
 import { getFileUrl, getFileType } from "@/lib/utils";
 import { revalidatePath } from "next/cache";
+import { FileType } from "@prisma/client";
 
 export const uploadFile = async (
   file: File,
@@ -40,15 +41,11 @@ export const uploadFile = async (
           userId: userId,
         },
       });
-      console.log("file stored", fileRecord);
 
-      //   const storageUpdate = await prisma.storage.update({
-      //     where: { userId: userId },
-      //     data: {
-      //       usedSpace: { increment: bucketFile.sizeOriginal },
-      //     },
-      //   });
-      //   console.log("storage updated", storageUpdate);
+      await prisma.user.update({
+        where: { id: userId },
+        data: { usedSpace: { increment: bucketFile.sizeOriginal } },
+      });
 
       revalidatePath(path);
       return fileRecord;
@@ -64,5 +61,31 @@ export const uploadFile = async (
       }
       throw error;
     }
+  }
+};
+
+export const getFiles = async (
+  userId: string | undefined,
+  category: FileType,
+  skip: number,
+  take: number
+) => {
+  try {
+    const files = await prisma.file.findMany({
+      where: {
+        userId: userId,
+        category: category,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+      skip,
+      take,
+    });
+
+    return files;
+  } catch (error) {
+    console.error("Failed to get files", error);
+    throw error;
   }
 };

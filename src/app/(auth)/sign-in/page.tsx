@@ -6,7 +6,7 @@ import {
   CardDescription,
   CardContent,
 } from "@/components/ui/card";
-import SignInForm from "@/components/SignInForm";
+import SignInForm from "@/components/form/SignInForm";
 import GoogleSignIn from "@/components/GoogleSignIn";
 
 const SignIn = () => {
