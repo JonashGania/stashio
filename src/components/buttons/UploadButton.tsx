@@ -8,11 +8,15 @@ import UploadingLists from "../UploadingLists";
 import { maxFileSize } from "@/constants";
 import { useToast } from "@/hooks/use-toast";
 import { usePathname } from "next/navigation";
+import { InfiniteData, useQueryClient } from "@tanstack/react-query";
+import { getFileType } from "@/lib/utils";
+import { InfiniteDataResponse } from "@/types";
 
 const UploadButton = ({ userId }: { userId: string | undefined }) => {
   const [files, setFiles] = useState<File[]>([]);
   const { toast } = useToast();
 
+  const queryClient = useQueryClient();
   const pathname = usePathname();
 
   const onDrop = useCallback(
@@ -38,11 +42,27 @@ const UploadButton = ({ userId }: { userId: string | undefined }) => {
           });
         }
 
+        const category = getFileType(file.name).type;
         try {
           const doneFile = await uploadFile(file, userId, pathname);
           if (doneFile) {
             setFiles((prevFiles) =>
               prevFiles.filter((f) => f.name !== doneFile.name)
+            );
+
+            queryClient.setQueryData(
+              ["files", userId, category],
+              (oldData: InfiniteData<InfiniteDataResponse>) => {
+                if (!oldData) return oldData;
+
+                return {
+                  ...oldData,
+                  pages: [
+                    [doneFile, ...oldData.pages[0]],
+                    ...oldData.pages.slice(1),
+                  ],
+                };
+              }
             );
           }
         } catch (error) {
@@ -61,7 +81,7 @@ const UploadButton = ({ userId }: { userId: string | undefined }) => {
 
       await Promise.all(uploads);
     },
-    [toast, userId, setFiles, pathname]
+    [toast, userId, setFiles, pathname, queryClient]
   );
 
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
