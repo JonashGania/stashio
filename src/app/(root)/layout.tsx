@@ -9,7 +9,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
 
       <section className="flex flex-col h-full w-full flex-1 px-4">
         <Header />
-        <div>{children}</div>
+        <div className="h-full flex-1">{children}</div>
       </section>
     </main>
   );
