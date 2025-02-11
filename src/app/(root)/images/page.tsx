@@ -1,6 +1,6 @@
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
-import FilesWrapper from "../images/component/FilesWrapper";
+import FilesWrapper from "../../../components/FilesWrapper";
 
 const Images = async () => {
   const session = await auth();
