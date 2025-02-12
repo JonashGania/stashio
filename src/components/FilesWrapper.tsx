@@ -10,6 +10,7 @@ import SelectComponent from "@/components/Select";
 import { useEffect } from "react";
 import GridCard from "./cards/GridCard";
 import TableCard from "./cards/TableCard";
+import { columns } from "./Columns";
 
 interface FetchFilesProps {
   userId: string | undefined;
@@ -51,8 +52,6 @@ const FilesWrapper = ({
       refetchOnWindowFocus: false,
       staleTime: Infinity,
     });
-
-  console.log(data);
 
   const { ref, inView } = useInView();
 
@@ -122,7 +121,7 @@ const FilesWrapper = ({
             </div>
           ) : (
             <>
-              <TableCard files={allFiles} />
+              <TableCard columns={columns} data={allFiles} />
               {allFiles.length >= 19 && (
                 <div ref={ref} className="flex justify-center items-center">
                   {isFetchingNextPage && (
