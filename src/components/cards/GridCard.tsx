@@ -8,9 +8,7 @@ const GridCard = ({ files }: { files: Files[] }) => {
   return (
     <>
       {files.length === 0 ? (
-        <p className="text-lg text-zinc-400 font-medium text-center">
-          No files uploaded
-        </p>
+        <p className="text-lg text-zinc-400 text-center">No files uploaded</p>
       ) : (
         <div className="card-grid-layout">
           {files.map((file) => {
