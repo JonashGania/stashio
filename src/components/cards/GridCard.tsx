@@ -1,6 +1,6 @@
 import { Files } from "@/types";
 import { getFileIcon, getFileType } from "@/lib/utils";
-import { EllipsisVertical } from "lucide-react";
+import DropdownAction from "../DropdownAction";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -13,6 +13,7 @@ const GridCard = ({ files }: { files: Files[] }) => {
         <div className="card-grid-layout">
           {files.map((file) => {
             const { type, extension } = getFileType(file.name);
+            const isImage = type === "IMAGE" && extension !== "svg";
 
             return (
               <div key={file.id} className="flex flex-col gap-2">
@@ -28,9 +29,11 @@ const GridCard = ({ files }: { files: Files[] }) => {
                       {file.name}
                     </span>
                   </div>
-                  <button>
-                    <EllipsisVertical size={20} color="#3f3f46" />
-                  </button>
+                  <DropdownAction
+                    layout="grid"
+                    files={file}
+                    userId={file.userId}
+                  />
                 </div>
                 <Link
                   href={file.fileUrl}
@@ -38,11 +41,12 @@ const GridCard = ({ files }: { files: Files[] }) => {
                   target="_blank"
                 >
                   <Image
-                    src={file.fileUrl}
+                    src={isImage ? file.fileUrl : getFileIcon(type, extension)}
                     alt={`${file.name} image`}
                     fill
-                    objectFit="cover"
-                    className="rounded-sm"
+                    sizes="w-full"
+                    className="rounded-sm object-cover"
+                    priority
                   />
                 </Link>
               </div>

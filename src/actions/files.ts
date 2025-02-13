@@ -89,3 +89,36 @@ export const getFiles = async (
     throw error;
   }
 };
+
+export const renameFile = async (
+  fileId: string,
+  name: string,
+  extension: string
+) => {
+  try {
+    const newName = `${name}.${extension}`;
+
+    const existingFile = await prisma.file.findUnique({
+      where: { id: fileId },
+      select: { userId: true },
+    });
+
+    if (!existingFile) {
+      throw new Error("File not found");
+    }
+
+    await prisma.file.update({
+      where: {
+        id: fileId,
+      },
+      data: {
+        name: newName,
+      },
+    });
+
+    return { success: true, message: "File has been successfully renamed." };
+  } catch (error) {
+    console.error("Failed to rename file", error);
+    return { success: false, message: "Failed to rename." };
+  }
+};

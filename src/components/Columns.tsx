@@ -2,16 +2,13 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { Files } from "@/types";
-import { format } from "date-fns";
-import { formatFileSize, getFileType, getFileIcon } from "@/lib/utils";
 import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuItem,
-} from "./ui/dropdown-menu";
-import { Ellipsis } from "lucide-react";
+  formatFileSize,
+  getFileType,
+  getFileIcon,
+  formatDate,
+} from "@/lib/utils";
+import DropdownAction from "./DropdownAction";
 import Image from "next/image";
 
 export const columns: ColumnDef<Files>[] = [
@@ -50,9 +47,8 @@ export const columns: ColumnDef<Files>[] = [
     accessorKey: "createdAt",
     header: "Uploaded",
     cell: ({ row }) => {
-      const date = new Date(row.getValue("createdAt"));
-      const formatted = format(date, "MMM d, yyyy");
-      return <div>{formatted}</div>;
+      const date = formatDate(row.getValue("createdAt"));
+      return <div>{date}</div>;
     },
   },
   {
@@ -61,17 +57,7 @@ export const columns: ColumnDef<Files>[] = [
       const file = row.original;
 
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <button>
-              <Ellipsis size={15} color="#52525b " />
-            </button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <DropdownAction layout="table" files={file} userId={file.userId} />
       );
     },
   },

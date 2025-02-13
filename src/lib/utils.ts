@@ -138,6 +138,12 @@ export const getFileUrl = (bucketFileId: string) => {
   return `${process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT}/storage/buckets/${process.env.NEXT_PUBLIC_APPWRITE_BUCKET}/files/${bucketFileId}/view?project=${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`;
 };
 
+export const formatDate = (date: string) => {
+  const newDate = new Date(date);
+  const formatted = format(newDate, "MMM d, yyyy");
+  return formatted;
+};
+
 export const formatFileSize = (bytes: number) => {
   if (bytes < 1024) {
     return `${bytes} B`;
