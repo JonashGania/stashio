@@ -57,7 +57,10 @@ const RenameDialog = ({ file, userId }: RenameDialogProps) => {
         description: `${res.message}`,
       });
 
-      queryClient.invalidateQueries({ queryKey: ["files", userId, type] });
+      queryClient.invalidateQueries({
+        queryKey: ["files", userId, type],
+        exact: false,
+      });
     } else {
       toast({
         variant: "destructive",
