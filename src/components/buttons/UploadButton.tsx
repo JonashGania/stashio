@@ -50,8 +50,8 @@ const UploadButton = ({ userId }: { userId: string | undefined }) => {
               prevFiles.filter((f) => f.name !== doneFile.name)
             );
 
-            queryClient.setQueryData(
-              ["files", userId, category],
+            queryClient.setQueriesData(
+              { queryKey: ["files", userId, category], exact: false },
               (oldData: InfiniteData<InfiniteDataResponse>) => {
                 if (!oldData) return oldData;
 
@@ -64,6 +64,21 @@ const UploadButton = ({ userId }: { userId: string | undefined }) => {
                 };
               }
             );
+
+            // queryClient.setQueryData(
+            //   ["files", userId, category],
+            //   (oldData: InfiniteData<InfiniteDataResponse>) => {
+            //     if (!oldData) return oldData;
+
+            //     return {
+            //       ...oldData,
+            //       pages: [
+            //         [doneFile, ...oldData.pages[0]],
+            //         ...oldData.pages.slice(1),
+            //       ],
+            //     };
+            //   }
+            // );
           }
         } catch (error) {
           console.error(error, "Error in uploading files");
