@@ -5,9 +5,12 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "./ui/dropdown-menu";
-import { Ellipsis, EllipsisVertical, Download, Trash2 } from "lucide-react";
+import { Ellipsis, EllipsisVertical, Download } from "lucide-react";
+import Link from "next/link";
 import DetailsDialog from "./dialogs/DetailsDialog";
 import RenameDialog from "./dialogs/RenameDialog";
+import DeleteDialog from "./dialogs/DeleteDialog";
+import { getDownloadUrl } from "@/lib/utils";
 
 interface DropdownActionProps {
   layout: string;
@@ -41,12 +44,21 @@ const DropdownAction = ({ layout, files, userId }: DropdownActionProps) => {
           <RenameDialog file={files} userId={userId} />
         </DropdownMenuItem>
         <DropdownMenuItem className="focus:bg-zinc-300">
-          <Download />
-          <span className="text-zinc-600">Download</span>
+          <Link
+            href={getDownloadUrl(files.fileId)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-[6px]"
+          >
+            <Download size={16} />
+            <span className="text-zinc-600">Download</span>
+          </Link>
         </DropdownMenuItem>
-        <DropdownMenuItem className="focus:bg-zinc-300">
-          <Trash2 />
-          <span className="text-zinc-600">Delete</span>
+        <DropdownMenuItem
+          className="focus:bg-zinc-300"
+          onSelect={(e) => e.preventDefault()}
+        >
+          <DeleteDialog file={files} userId={userId} />
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
