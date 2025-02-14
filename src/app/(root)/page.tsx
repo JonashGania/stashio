@@ -1,8 +1,18 @@
 import { getCategories } from "@/lib/utils";
+import { auth } from "@/auth";
+import { redirect } from "next/navigation";
 import CategoryCard from "@/components/CategoryCard";
 import StorageChart from "@/components/StorageChart";
+import RecentUploads from "@/components/RecentUploads";
 
-const Dashboard = () => {
+const Dashboard = async () => {
+  const session = await auth();
+  const user = session?.user;
+
+  if (!user) {
+    redirect("sign-in");
+  }
+
   const categories = getCategories();
 
   return (
@@ -19,9 +29,7 @@ const Dashboard = () => {
             Recent Uploads
           </h3>
           <div className="pt-4">
-            <p className="text-lg text-zinc-400 font-medium text-center">
-              No files uploaded
-            </p>
+            <RecentUploads userId={user.id} />
           </div>
         </div>
         <div className="w-[30%] lg:w-[350px] lg:px-12">
