@@ -1,6 +1,6 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { FileType } from "@prisma/client";
+import { FileType, Prisma } from "@prisma/client";
 import { format } from "date-fns";
 
 export function cn(...inputs: ClassValue[]) {
@@ -138,6 +138,10 @@ export const getFileUrl = (bucketFileId: string) => {
   return `${process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT}/storage/buckets/${process.env.NEXT_PUBLIC_APPWRITE_BUCKET}/files/${bucketFileId}/view?project=${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`;
 };
 
+export const getDownloadUrl = (buketFileId: string) => {
+  return `${process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT}/storage/buckets/${process.env.NEXT_PUBLIC_APPWRITE_BUCKET}/files/${buketFileId}/download?project=${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`;
+};
+
 export const formatDate = (date: string) => {
   const newDate = new Date(date);
   const formatted = format(newDate, "MMM d, yyyy");
@@ -153,5 +157,26 @@ export const formatFileSize = (bytes: number) => {
     return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
   } else {
     return `${(bytes / (1024 * 1024 * 1024)).toFixed(1)} GB`;
+  }
+};
+
+export const sortOrderBy = (
+  sortOption: string
+): Prisma.FileOrderByWithRelationInput => {
+  switch (sortOption) {
+    case "date-newest":
+      return { createdAt: "desc" as Prisma.SortOrder };
+    case "date-oldest":
+      return { createdAt: "asc" as Prisma.SortOrder };
+    case "name-a-z":
+      return { name: "asc" as Prisma.SortOrder };
+    case "name-z-a":
+      return { name: "desc" as Prisma.SortOrder };
+    case "size-highest":
+      return { size: "desc" as Prisma.SortOrder };
+    case "size-lowest":
+      return { size: "asc" as Prisma.SortOrder };
+    default:
+      return { createdAt: "desc" as Prisma.SortOrder };
   }
 };
