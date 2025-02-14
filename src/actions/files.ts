@@ -5,7 +5,7 @@ import { appwriteConfig } from "@/lib/appwrite/config";
 import { prisma } from "@/lib/prisma";
 import { ID } from "node-appwrite";
 import { InputFile } from "node-appwrite/file";
-import { getFileUrl, getFileType } from "@/lib/utils";
+import { getFileUrl, getFileType, sortOrderBy } from "@/lib/utils";
 import { revalidatePath } from "next/cache";
 import { FileType } from "@prisma/client";
 
@@ -68,17 +68,18 @@ export const getFiles = async (
   userId: string | undefined,
   category: FileType,
   skip: number,
-  take: number
+  take: number,
+  sortOption: string
 ) => {
   try {
+    const orderBy = sortOrderBy(sortOption);
+
     const files = await prisma.file.findMany({
       where: {
         userId: userId,
         category: category,
       },
-      orderBy: {
-        createdAt: "desc",
-      },
+      orderBy,
       skip,
       take,
     });
@@ -104,7 +105,7 @@ export const renameFile = async (
     });
 
     if (!existingFile) {
-      throw new Error("File not found");
+      return { success: false, message: "File not found" };
     }
 
     await prisma.file.update({
@@ -120,5 +121,49 @@ export const renameFile = async (
   } catch (error) {
     console.error("Failed to rename file", error);
     return { success: false, message: "Failed to rename." };
+  }
+};
+
+export const deleteFile = async (
+  fileId: string,
+  userId: string | undefined,
+  bucketFileId: string
+) => {
+  const { storage } = await appwriteClient();
+
+  try {
+    const existingFile = await prisma.file.findUnique({
+      where: { id: fileId },
+      select: { userId: true },
+    });
+
+    if (!existingFile) {
+      return { success: false, message: "File not found" };
+    }
+
+    await storage.deleteFile(appwriteConfig.bucketId, bucketFileId);
+
+    await prisma.file.delete({ where: { userId: userId, id: fileId } });
+
+    return { success: true, message: "File has been successfully deleted." };
+  } catch (error) {
+    console.error("Failed to delete file", error);
+    return { success: false, message: "Failed to delete" };
+  }
+};
+
+export const getRecentUploaded = async (userId: string | undefined) => {
+  try {
+    const files = await prisma.file.findMany({
+      where: { userId: userId },
+      orderBy: { createdAt: "desc" },
+      skip: 0,
+      take: 15,
+    });
+
+    return files;
+  } catch (error) {
+    console.error("Failed to get recent uploads", error);
+    throw new Error("Failed to fetch recent uploads");
   }
 };
