@@ -29,7 +29,7 @@ const DetailsDialog = ({ file }: { file: Files }) => {
       </DialogTrigger>
       <DialogContent className="max-w-md">
         <DialogHeader>
-          <DialogTitle className="text-center">Info</DialogTitle>
+          <DialogTitle className="font-normal text-2xl">File info</DialogTitle>
         </DialogHeader>
         <DialogDescription></DialogDescription>
         <div className="pt-1">
