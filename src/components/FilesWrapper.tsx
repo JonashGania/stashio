@@ -7,7 +7,7 @@ import { FileType } from "@prisma/client";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useInView } from "react-intersection-observer";
 import SelectComponent from "@/components/Select";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import GridCard from "./cards/GridCard";
 import TableCard from "./cards/TableCard";
 import { columns } from "./Columns";
@@ -16,12 +16,14 @@ interface FetchFilesProps {
   userId: string | undefined;
   category: FileType;
   pageParam: number;
+  sortOption: string;
 }
 
 const fetchFiles = async ({
   userId,
   category,
   pageParam = 0,
+  sortOption,
 }: FetchFilesProps) => {
   if (!userId) {
     throw new Error("User is not authenticated");
@@ -30,7 +32,7 @@ const fetchFiles = async ({
   const take = 20;
   const skip = pageParam * take;
 
-  const files = await getFiles(userId, category, skip, take);
+  const files = await getFiles(userId, category, skip, take, sortOption);
   return files;
 };
 
@@ -41,19 +43,31 @@ const FilesWrapper = ({
   userId: string | undefined;
   category: FileType;
 }) => {
-  const { data, isLoading, isError, fetchNextPage, isFetchingNextPage } =
-    useInfiniteQuery({
-      queryKey: ["files", userId, category],
-      queryFn: ({ pageParam = 0 }) =>
-        fetchFiles({ userId, category, pageParam }),
-      initialPageParam: 0,
-      getNextPageParam: (lastPage, allPages) =>
-        lastPage.length > 0 ? allPages.length : undefined,
-      refetchOnWindowFocus: false,
-      staleTime: Infinity,
-    });
+  const [sortOption, setSortOption] = useState("date-newest");
+
+  const {
+    data,
+    isLoading,
+    isError,
+    fetchNextPage,
+    isFetchingNextPage,
+    refetch,
+  } = useInfiniteQuery({
+    queryKey: ["files", userId, category, sortOption],
+    queryFn: ({ pageParam = 0 }) =>
+      fetchFiles({ userId, category, pageParam, sortOption }),
+    initialPageParam: 0,
+    getNextPageParam: (lastPage, allPages) =>
+      lastPage.length > 0 ? allPages.length : undefined,
+    refetchOnWindowFocus: false,
+    staleTime: Infinity,
+  });
 
   const { ref, inView } = useInView();
+
+  useEffect(() => {
+    refetch();
+  }, [refetch, sortOption]);
 
   useEffect(() => {
     if (inView) {
@@ -76,7 +90,10 @@ const FilesWrapper = ({
             Table
           </TabsTrigger>
         </TabsList>
-        <SelectComponent />
+        <SelectComponent
+          sortOption={sortOption}
+          setSortOption={setSortOption}
+        />
       </div>
       <TabsContent value="grid">
         <div className="pt-4">
