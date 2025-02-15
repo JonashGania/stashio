@@ -167,3 +167,36 @@ export const getRecentUploaded = async (userId: string | undefined) => {
     throw new Error("Failed to fetch recent uploads");
   }
 };
+
+export const getStatsByCategory = async (userId: string | undefined) => {
+  try {
+    const files = await prisma.file.groupBy({
+      by: ["category"],
+      where: { userId: userId },
+      _sum: { size: true },
+      _count: { id: true },
+    });
+
+    return files;
+  } catch (error) {
+    console.error("Failed to get category file stats", error);
+    throw new Error("Failed to fetch category file stats");
+  }
+};
+
+export const getAvailabeStorage = async (userId: string | undefined) => {
+  try {
+    const storageInfo = await prisma.user.findUnique({
+      where: { id: userId },
+      select: {
+        totalSpace: true,
+        usedSpace: true,
+      },
+    });
+
+    return storageInfo;
+  } catch (error) {
+    console.error("Failed to get user storage info", error);
+    throw new Error("Failed to fetch user storage info");
+  }
+};
