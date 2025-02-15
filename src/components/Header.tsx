@@ -1,4 +1,4 @@
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Menu } from "lucide-react";
 import { auth } from "@/auth";
 import {
   DropdownMenu,
@@ -24,7 +24,7 @@ const Header = async () => {
     <header className="w-full flex gap-4 justify-between py-3 px-6">
       <Searchbar />
 
-      <div className="flex gap-4 items-center">
+      <div className="hidden md:flex gap-4 items-center ">
         <UploadButton userId={user.id} />
         <ThemeButton />
 
@@ -50,6 +50,10 @@ const Header = async () => {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
+
+      <button className="block md:hidden">
+        <Menu size={40} color="#3f3f46  " strokeWidth={2} />
+      </button>
     </header>
   );
 };

@@ -13,11 +13,12 @@ import {
 import { Trash2, LoaderCircle } from "lucide-react";
 import { Button } from "../ui/button";
 import { useState } from "react";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQueryClient, InfiniteData } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 import { deleteFile } from "@/actions/files";
 import { Files } from "@/types";
 import { getFileType } from "@/lib/utils";
+import { InfiniteDataResponse } from "@/types";
 
 interface DeleteDialogProps {
   file: Files;
@@ -46,10 +47,27 @@ const DeleteDialog = ({ file, userId }: DeleteDialogProps) => {
         description: `${res.message}`,
       });
 
-      queryClient.invalidateQueries({
-        queryKey: ["files", userId, category],
-        exact: false,
-      });
+      queryClient.setQueryData(
+        ["recentUploads", userId],
+        (oldFiles: Files[] | undefined) => {
+          if (!oldFiles) return oldFiles;
+          return oldFiles.filter((f) => f.id !== file.id);
+        }
+      );
+
+      queryClient.setQueriesData(
+        { queryKey: ["files", userId, category], exact: false },
+        (oldData: InfiniteData<InfiniteDataResponse> | undefined) => {
+          if (!oldData) return oldData;
+
+          return {
+            ...oldData,
+            pages: oldData.pages.map((page) =>
+              page.filter((f) => f.id !== file.id)
+            ),
+          };
+        }
+      );
     } else {
       toast({
         variant: "destructive",

@@ -1,7 +1,7 @@
 "use client";
 
 import { getRecentUploaded } from "@/actions/files";
-import { getFileType, getFileIcon } from "@/lib/utils";
+import { getFileType, getFileIcon, formatDateWithTime } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { LoaderCircle } from "lucide-react";
 import DropdownAction from "./DropdownAction";
@@ -50,10 +50,13 @@ const RecentUploads = ({ userId }: { userId: string | undefined }) => {
                       className="rounded-lg object-cover"
                     />
                   </div>
-
-                  <div>
-                    <h3 className="text-zinc-700 font-medium">{file.name}</h3>
-                    <span className="text-sm text-zinc-400">Date</span>
+                  <div className="flex-1 flex flex-col ">
+                    <p className="text-zinc-700 font-medium recent-file-name">
+                      {file.name}
+                    </p>
+                    <span className="text-sm text-zinc-400">
+                      {formatDateWithTime(file.createdAt.toString())}
+                    </span>
                   </div>
                 </div>
                 <DropdownAction

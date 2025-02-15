@@ -17,8 +17,9 @@ import { PencilLine, LoaderCircle } from "lucide-react";
 import { renameFile } from "@/actions/files";
 import { useState } from "react";
 import { getFileType } from "@/lib/utils";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQueryClient, InfiniteData } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
+import { InfiniteDataResponse } from "@/types";
 
 interface RenameDialogProps {
   file: Files;
@@ -56,6 +57,32 @@ const RenameDialog = ({ file, userId }: RenameDialogProps) => {
         title: `File rename`,
         description: `${res.message}`,
       });
+
+      queryClient.setQueryData(
+        ["recentUploads", userId],
+        (oldFiles: Files[] | undefined) => {
+          if (!oldFiles) return oldFiles;
+          return oldFiles.map((f) =>
+            f.id === file.id ? { ...f, name: `${newName}.${extension}` } : f
+          );
+        }
+      );
+
+      queryClient.setQueriesData(
+        { queryKey: ["files", userId, type], exact: false },
+        (oldData: InfiniteData<InfiniteDataResponse> | undefined) => {
+          if (!oldData) return oldData;
+
+          return {
+            ...oldData,
+            pages: oldData.pages.map((page) =>
+              page.map((f) =>
+                f.id === file.id ? { ...f, name: `${newName}.${extension}` } : f
+              )
+            ),
+          };
+        }
+      );
 
       queryClient.invalidateQueries({
         queryKey: ["files", userId, type],
