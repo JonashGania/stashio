@@ -26,7 +26,9 @@ export const columns: ColumnDef<Files>[] = [
             width={20}
             height={20}
           />
-          <span className="text-zinc-800">{row.getValue("name")}</span>
+          <span className="text-zinc-800 max-w-[180px] sm:max-w-[300] truncate">
+            {row.getValue("name")}
+          </span>
         </div>
       );
     },
@@ -37,7 +39,7 @@ export const columns: ColumnDef<Files>[] = [
   },
   {
     accessorKey: "size",
-    header: "File size",
+    header: "Size",
     cell: ({ row }) => {
       const formattedSize = formatFileSize(row.getValue("size"));
       return <div>{formattedSize}</div>;

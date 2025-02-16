@@ -88,7 +88,7 @@ const DeleteDialog = ({ file, userId }: DeleteDialogProps) => {
           <span className="text-zinc-600">Delete</span>
         </button>
       </DialogTrigger>
-      <DialogContent className="max-w-sm">
+      <DialogContent className="max-w-[340px] phone:max-w-sm">
         <DialogHeader>
           <DialogTitle className="font-normal text-2xl text-red-500">
             Delete

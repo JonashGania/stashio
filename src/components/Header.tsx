@@ -10,6 +10,7 @@ import Searchbar from "./Searchbar";
 import UploadButton from "./buttons/UploadButton";
 import SignOutButton from "./buttons/SignOutButton";
 import ThemeButton from "./buttons/ThemeButton";
+import MobileNavigation from "./MobileNavigation";
 import { redirect } from "next/navigation";
 
 const Header = async () => {
@@ -29,7 +30,7 @@ const Header = async () => {
         <ThemeButton />
 
         <DropdownMenu>
-          <DropdownMenuTrigger className="flex items-center gap-1 rounded-xl hover:bg-zinc-200 pr-1 outline-none">
+          <DropdownMenuTrigger className="flex items-center flex-shrink-0 gap-1 rounded-xl hover:bg-zinc-200 pr-1 outline-none">
             <Avatar user={user} />
             <ChevronDown color="#52525b" size={15} />
           </DropdownMenuTrigger>
@@ -40,20 +41,23 @@ const Header = async () => {
             <div className="flex gap-2 items-center mb-3">
               <Avatar user={user} />
               <div className="flex flex-col gap-0 max-w-[130px]">
-                <span className="font-medium text-sm">{user?.name}</span>
+                <span className="font-medium text-sm capitalize">
+                  {user?.name}
+                </span>
                 <span className="text-xs text-zinc-600 overflow-hidden text-ellipsis">
                   {user?.email}
                 </span>
               </div>
             </div>
-            <SignOutButton />
+            <SignOutButton position="header" />
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
 
-      <button className="block md:hidden">
-        <Menu size={40} color="#3f3f46  " strokeWidth={2} />
-      </button>
+      <div className="flex md:hidden items-center gap-2">
+        <ThemeButton />
+        <MobileNavigation user={user} />
+      </div>
     </header>
   );
 };

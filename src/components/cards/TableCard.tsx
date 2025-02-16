@@ -37,8 +37,17 @@ const TableCard = <TData, TValue>({
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
+                const hiddenClasses = ["Type", "Size", "Uploaded"].includes(
+                  header.column.columnDef.header as string
+                )
+                  ? "hidden phone:table-cell"
+                  : "";
+
                 return (
-                  <TableHead key={header.id} className="text-black">
+                  <TableHead
+                    key={header.id}
+                    className={`text-black ${hiddenClasses}`}
+                  >
                     {header.isPlaceholder
                       ? null
                       : flexRender(
@@ -58,11 +67,25 @@ const TableCard = <TData, TValue>({
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
               >
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id} className="text-zinc-600">
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
+                {row.getVisibleCells().map((cell) => {
+                  const hiddenClasses = ["type", "size", "createdAt"].includes(
+                    cell.column.id
+                  )
+                    ? "hidden phone:table-cell"
+                    : "";
+
+                  return (
+                    <TableCell
+                      key={cell.id}
+                      className={`text-zinc-600 ${hiddenClasses}`}
+                    >
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </TableCell>
+                  );
+                })}
               </TableRow>
             ))
           ) : (

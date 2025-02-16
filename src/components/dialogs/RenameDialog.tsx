@@ -108,7 +108,7 @@ const RenameDialog = ({ file, userId }: RenameDialogProps) => {
           <span className="text-zinc-600">Rename</span>
         </button>
       </DialogTrigger>
-      <DialogContent className="max-w-sm">
+      <DialogContent className="max-w-[340px] phone:max-w-sm">
         <DialogHeader>
           <DialogTitle className="font-normal text-2xl">Rename</DialogTitle>
         </DialogHeader>

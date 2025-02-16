@@ -27,13 +27,13 @@ const DetailsDialog = ({ file }: { file: Files }) => {
           <span className="text-zinc-600">Details</span>
         </button>
       </DialogTrigger>
-      <DialogContent className="max-w-md">
+      <DialogContent className="max-w-[340px] phone:max-w-md">
         <DialogHeader>
           <DialogTitle className="font-normal text-2xl">File info</DialogTitle>
         </DialogHeader>
         <DialogDescription></DialogDescription>
         <div className="pt-1">
-          <div className="relative w-full h-[200px]">
+          <div className="relative w-full h-[180px] phone:h-[200px]">
             <Image
               src={isImage ? file.fileUrl : getFileIcon(type, extension)}
               alt={`${file.name} image`}
@@ -45,7 +45,7 @@ const DetailsDialog = ({ file }: { file: Files }) => {
 
           <div className="pt-6">
             <h2 className="font-medium text-center">File Details</h2>
-            <div className="pt-2 grid grid-cols-4 gap-2">
+            <div className="pt-2 grid grid-cols-3 phone:grid-cols-4 gap-2">
               <div className="flex items-center flex-col">
                 <h3 className="text-sm">Created</h3>
                 <h4 className="text-zinc-600 text-xs">

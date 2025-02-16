@@ -37,7 +37,7 @@ const GridCard = ({ files }: { files: Files[] }) => {
                 </div>
                 <Link
                   href={file.fileUrl}
-                  className="relative w-full h-[220px] rounded-md"
+                  className="relative w-full h-[170px] phone:h-[220px] rounded-md"
                   target="_blank"
                 >
                   <Image

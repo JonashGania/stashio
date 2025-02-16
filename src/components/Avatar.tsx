@@ -1,7 +1,11 @@
 import { User } from "next-auth";
 import Image from "next/image";
 
-const Avatar = ({ user }: { user: User | undefined }) => {
+interface AvatarProps {
+  user: User | undefined;
+}
+
+const Avatar = ({ user }: AvatarProps) => {
   return (
     <>
       {user?.image ? (
@@ -13,8 +17,10 @@ const Avatar = ({ user }: { user: User | undefined }) => {
           className="rounded-full"
         />
       ) : (
-        <div className="w-[28px] h-[28px] rounded-full bg-violet-500 font-medium text-white grid place-items-center">
-          {user?.name?.substring(0, 1).toUpperCase()}
+        <div
+          className={`w-[28px] h-[28px] rounded-full bg-violet-500 font-medium text-white grid place-items-center`}
+        >
+          {user?.name?.charAt(0).toUpperCase()}
         </div>
       )}
     </>

@@ -11,7 +11,7 @@ const Documents = async () => {
   }
 
   return (
-    <div className="pt-8 pl-5 pr-12">
+    <div className="pt-8 pl-5 pr-6 sm:pr-12">
       <h1 className="text-3xl font-bold text-zinc-600">Documents</h1>
       <FilesWrapper userId={user.id} category="DOCUMENT" />
     </div>

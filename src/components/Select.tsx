@@ -18,9 +18,14 @@ const SelectComponent = ({
 }: SelectComponentProps) => {
   return (
     <div className="flex gap-2 items-center">
-      <Label htmlFor="sort-type">Sort by:</Label>
+      <Label htmlFor="sort-type" className="hidden phone:block">
+        Sort by:
+      </Label>
+      <Label htmlFor="sort-type" className="block phone:hidden">
+        Sort:
+      </Label>
       <Select value={sortOption} onValueChange={setSortOption}>
-        <SelectTrigger id="sort-type" className="w-[180px]">
+        <SelectTrigger id="sort-type" className="w-[140px] sm:w-[180px]">
           <SelectValue />
         </SelectTrigger>
         <SelectContent>
