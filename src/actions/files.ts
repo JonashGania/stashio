@@ -200,3 +200,32 @@ export const getAvailabeStorage = async (userId: string | undefined) => {
     throw new Error("Failed to fetch user storage info");
   }
 };
+
+export const getSearchedFiles = async ({
+  search = "",
+  limit = 15,
+  userId,
+}: {
+  search?: string;
+  limit?: number;
+  userId: string | undefined;
+}) => {
+  try {
+    const files = await prisma.file.findMany({
+      where: {
+        userId: userId,
+        name: {
+          contains: search,
+          mode: "insensitive",
+        },
+      },
+      orderBy: { createdAt: "desc" },
+      take: limit,
+    });
+
+    return files;
+  } catch (error) {
+    console.error("Error fetching files", error);
+    throw new Error("Error fetching files");
+  }
+};
