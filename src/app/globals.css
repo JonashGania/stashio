@@ -84,7 +84,7 @@
 }
 
 .nav-icon {
-  @apply filter invert opacity-25 !important;
+  @apply filter invert opacity-25 dark:invert-0 dark:opacity-55 !important;
 }
 
 .nav-icon-active {
@@ -93,6 +93,18 @@
 
 .sidebar {
   @apply w-[90px] lg:w-[230px] !important;
+}
+
+.search::-webkit-scrollbar {
+  width: 5px;
+}
+
+.search::-webkit-scrollbar-thumb {
+  @apply bg-zinc-300 dark:bg-zinc-600 rounded-md;
+}
+
+.search::-webkit-scrollbar-track {
+  background: transparent;
 }
 
 .categories-grid {

@@ -30,7 +30,11 @@ const MobileNavigation = ({ user }: { user: User | undefined }) => {
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
         <button onClick={() => setOpen(true)}>
-          <Menu size={40} color="#3f3f46  " strokeWidth={2} />
+          <Menu
+            size={40}
+            className="text-zinc-700 dark:text-zinc-300"
+            strokeWidth={2}
+          />
         </button>
       </SheetTrigger>
       <SheetContent className="w-[65%] sm:w-[50%] px-3 flex flex-col h-full gap-0">
@@ -47,7 +51,7 @@ const MobileNavigation = ({ user }: { user: User | undefined }) => {
                 <p className="font-medium text-base truncate capitalize">
                   {user?.name}
                 </p>
-                <p className="text-sm font-normal text-zinc-500 truncate">
+                <p className="text-sm font-normal text-zinc-500 dark:text-gray-300 truncate">
                   {user?.email}
                 </p>
               </div>
@@ -68,7 +72,7 @@ const MobileNavigation = ({ user }: { user: User | undefined }) => {
                   className={`flex items-center gap-2 px-4 py-3 rounded-[30px] ${
                     pathname === item.url
                       ? "bg-violet-500 hover:bg-violet-500"
-                      : "bg-white hover:bg-violet-100"
+                      : "bg-white dark:bg-gray-950 hover:bg-violet-100"
                   }`}
                 >
                   <Image
@@ -82,7 +86,9 @@ const MobileNavigation = ({ user }: { user: User | undefined }) => {
                   />
                   <span
                     className={`font-medium text-lg ${
-                      pathname === item.url ? "text-white" : "text-zinc-700"
+                      pathname === item.url
+                        ? "text-white"
+                        : "text-zinc-700 dark:text-gray-200"
                     }`}
                   >
                     {item.name}

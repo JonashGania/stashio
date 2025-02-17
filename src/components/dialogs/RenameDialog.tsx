@@ -105,7 +105,7 @@ const RenameDialog = ({ file, userId }: RenameDialogProps) => {
           onClick={() => setOpen(true)}
         >
           <PencilLine size={16} />
-          <span className="text-zinc-600">Rename</span>
+          <span className="text-zinc-600 dark:text-gray-200">Rename</span>
         </button>
       </DialogTrigger>
       <DialogContent className="max-w-[340px] phone:max-w-sm">

@@ -1,4 +1,4 @@
-import { ChevronDown, Menu } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { auth } from "@/auth";
 import {
   DropdownMenu,
@@ -23,16 +23,16 @@ const Header = async () => {
 
   return (
     <header className="w-full flex gap-4 justify-between py-3 px-6">
-      <Searchbar />
+      <Searchbar userId={user.id} />
 
       <div className="hidden md:flex gap-4 items-center ">
         <UploadButton userId={user.id} />
         <ThemeButton />
 
         <DropdownMenu>
-          <DropdownMenuTrigger className="flex items-center flex-shrink-0 gap-1 rounded-xl hover:bg-zinc-200 pr-1 outline-none">
+          <DropdownMenuTrigger className="flex items-center flex-shrink-0 gap-1 rounded-xl hover:bg-zinc-200 dark:hover:bg-zinc-800 pr-1 outline-none">
             <Avatar user={user} />
-            <ChevronDown color="#52525b" size={15} />
+            <ChevronDown size={15} />
           </DropdownMenuTrigger>
           <DropdownMenuContent
             className="px-4 py-2 overflow-hidden w-[200px]"
@@ -44,7 +44,7 @@ const Header = async () => {
                 <span className="font-medium text-sm capitalize">
                   {user?.name}
                 </span>
-                <span className="text-xs text-zinc-600 overflow-hidden text-ellipsis">
+                <span className="text-xs text-zinc-600 dark:text-zinc-300 overflow-hidden text-ellipsis">
                   {user?.email}
                 </span>
               </div>

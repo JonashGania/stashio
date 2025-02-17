@@ -29,22 +29,40 @@ const SelectComponent = ({
           <SelectValue />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="date-newest" className="focus:bg-zinc-300">
+          <SelectItem
+            value="date-newest"
+            className="focus:bg-zinc-300 dark:focus:bg-zinc-800"
+          >
             Date (Newest)
           </SelectItem>
-          <SelectItem value="date-oldest" className="focus:bg-zinc-300">
+          <SelectItem
+            value="date-oldest"
+            className="focus:bg-zinc-300 dark:focus:bg-zinc-800"
+          >
             Date (Oldest)
           </SelectItem>
-          <SelectItem value="name-a-z" className="focus:bg-zinc-300">
+          <SelectItem
+            value="name-a-z"
+            className="focus:bg-zinc-300 dark:focus:bg-zinc-800"
+          >
             Name A-Z
           </SelectItem>
-          <SelectItem value="name-z-a" className="focus:bg-zinc-300">
+          <SelectItem
+            value="name-z-a"
+            className="focus:bg-zinc-300 dark:focus:bg-zinc-800"
+          >
             Name Z-A
           </SelectItem>
-          <SelectItem value="size-highest" className="focus:bg-zinc-300">
+          <SelectItem
+            value="size-highest"
+            className="focus:bg-zinc-300 dark:focus:bg-zinc-800"
+          >
             Size (Highest)
           </SelectItem>
-          <SelectItem value="size-lowest" className="focus:bg-zinc-300">
+          <SelectItem
+            value="size-lowest"
+            className="focus:bg-zinc-300 dark:focus:bg-zinc-800"
+          >
             Size (Lowest)
           </SelectItem>
         </SelectContent>

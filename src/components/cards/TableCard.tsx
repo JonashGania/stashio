@@ -46,7 +46,7 @@ const TableCard = <TData, TValue>({
                 return (
                   <TableHead
                     key={header.id}
-                    className={`text-black ${hiddenClasses}`}
+                    className={`text-black dark:text-gray-200 ${hiddenClasses}`}
                   >
                     {header.isPlaceholder
                       ? null
@@ -77,7 +77,7 @@ const TableCard = <TData, TValue>({
                   return (
                     <TableCell
                       key={cell.id}
-                      className={`text-zinc-600 ${hiddenClasses}`}
+                      className={`text-zinc-600 dark:text-gray-300 ${hiddenClasses}`}
                     >
                       {flexRender(
                         cell.column.columnDef.cell,

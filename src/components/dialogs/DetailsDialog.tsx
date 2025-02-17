@@ -24,7 +24,7 @@ const DetailsDialog = ({ file }: { file: Files }) => {
       <DialogTrigger asChild>
         <button className="flex items-center gap-[6px] w-full">
           <Info size={16} />
-          <span className="text-zinc-600">Details</span>
+          <span className="text-zinc-600 dark:text-gray-200">Details</span>
         </button>
       </DialogTrigger>
       <DialogContent className="max-w-[340px] phone:max-w-md">
@@ -39,7 +39,7 @@ const DetailsDialog = ({ file }: { file: Files }) => {
               alt={`${file.name} image`}
               fill
               sizes="w-full"
-              className="rounded-md border border-zinc-300 object-cover"
+              className="rounded-md border border-zinc-300 dark:border-zinc-700 object-cover"
             />
           </div>
 
@@ -48,29 +48,31 @@ const DetailsDialog = ({ file }: { file: Files }) => {
             <div className="pt-2 grid grid-cols-3 phone:grid-cols-4 gap-2">
               <div className="flex items-center flex-col">
                 <h3 className="text-sm">Created</h3>
-                <h4 className="text-zinc-600 text-xs">
+                <h4 className="text-zinc-600 dark:text-gray-400 text-xs">
                   {formatDate(file.createdAt.toString())}
                 </h4>
               </div>
               <div className="flex items-center flex-col">
                 <h3 className="text-sm">Modified</h3>
-                <h4 className="text-zinc-600 text-xs">
+                <h4 className="text-zinc-600 dark:text-gray-400 text-xs">
                   {formatDate(file.updatedAt.toString())}
                 </h4>
               </div>
               <div className="flex items-center flex-col">
                 <h3 className="text-sm">Type</h3>
-                <h4 className="text-zinc-600 text-xs">{file.type}</h4>
+                <h4 className="text-zinc-600 dark:text-gray-400 text-xs">
+                  {file.type}
+                </h4>
               </div>
               <div className="flex items-center flex-col">
                 <h3 className="text-sm">Size</h3>
-                <h4 className="text-zinc-600 text-xs">
+                <h4 className="text-zinc-600 dark:text-gray-400 text-xs">
                   {formatFileSize(file.size)}
                 </h4>
               </div>
               <div className="flex items-center flex-col">
                 <h3 className="text-sm">Storage used</h3>
-                <h4 className="text-zinc-600 text-xs">
+                <h4 className="text-zinc-600 dark:text-gray-400 text-xs">
                   {formatFileSize(file.size)}
                 </h4>
               </div>

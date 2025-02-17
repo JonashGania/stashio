@@ -51,10 +51,10 @@ const RecentUploads = ({ userId }: { userId: string | undefined }) => {
                     />
                   </div>
                   <div className="flex-1 flex flex-col ">
-                    <p className="text-zinc-700 font-medium recent-file-name">
+                    <p className="text-zinc-700 dark:text-gray-200 font-medium recent-file-name">
                       {file.name}
                     </p>
-                    <span className="text-sm text-zinc-400">
+                    <span className="text-sm text-zinc-400 dark:text-zinc-300">
                       {formatDateWithTime(file.createdAt.toString())}
                     </span>
                   </div>

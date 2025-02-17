@@ -12,7 +12,9 @@ const Others = async () => {
 
   return (
     <div className="pt-8 pl-5 pr-6 sm:pr-12">
-      <h1 className="text-3xl font-bold text-zinc-600">Others</h1>
+      <h1 className="text-3xl font-bold text-zinc-600 dark:text-gray-200">
+        Others
+      </h1>
       <FilesWrapper userId={user.id} category="OTHER" />
     </div>
   );

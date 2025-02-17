@@ -112,7 +112,7 @@ const SignUpForm = () => {
                 className="animate-spin"
               />
             ) : (
-              <span>Create account</span>
+              <span className="text-white">Create account</span>
             )}
           </Button>
         </form>

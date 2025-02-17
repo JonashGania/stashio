@@ -85,7 +85,7 @@ const DeleteDialog = ({ file, userId }: DeleteDialogProps) => {
           onClick={() => setOpen(true)}
         >
           <Trash2 size={16} />
-          <span className="text-zinc-600">Delete</span>
+          <span className="text-zinc-600 dark:text-gray-200">Delete</span>
         </button>
       </DialogTrigger>
       <DialogContent className="max-w-[340px] phone:max-w-sm">

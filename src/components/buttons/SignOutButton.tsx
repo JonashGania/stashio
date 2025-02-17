@@ -5,15 +5,15 @@ const SignOutButton = ({ position }: { position: string }) => {
   return (
     <form action={signOutUser}>
       <button
-        className={`flex items-center gap-2 bg-black w-full  px-3 ${
+        className={`flex items-center gap-2 bg-black dark:bg-white w-full  px-3 ${
           position === "mobile-nav"
             ? `rounded-3xl py-2 justify-center`
             : `rounded-md py-1`
         }`}
       >
-        <LogOut size={18} color="#ffffff" />
+        <LogOut size={18} className="text-white dark:text-black" />
         <span
-          className={`text-white ${
+          className={`text-white dark:text-black ${
             position === "mobile-nav" ? "text-base" : "text-sm"
           }`}
         >

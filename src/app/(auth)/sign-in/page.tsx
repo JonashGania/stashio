@@ -20,12 +20,14 @@ const SignIn = () => {
         <CardContent className="px-8">
           <SignInForm />
           <div className="w-full my-4 flex items-center justify-center">
-            <div className="bg-zinc-300 flex-grow h-[1px]"></div>
-            <div className="mx-2 text-sm text-zinc-400">OR CONTINUE WITH</div>
-            <div className="bg-zinc-300 flex-grow h-[1px]"></div>
+            <div className="bg-zinc-300 dark:bg-zinc-600 flex-grow h-[1px]"></div>
+            <div className="mx-2 text-sm text-zinc-400 dark:text-zinc-500">
+              OR CONTINUE WITH
+            </div>
+            <div className="bg-zinc-300 dark:bg-zinc-600 flex-grow h-[1px]"></div>
           </div>
           <GoogleSignIn />
-          <p className="text-center pt-2 text-sm text-zinc-700">
+          <p className="text-center pt-2 text-sm text-zinc-700 dark:text-gray-200">
             Don&apos;t have an account?{" "}
             <Link href="/sign-up" className="text-violet-500 font-semibold">
               Sign up

@@ -16,9 +16,11 @@ const Dashboard = async () => {
     <div className="py-8 px-5 w-full">
       <div className="flex gap-12 lg:gap-16">
         <div className="flex-1">
-          <h3 className="text-zinc-600 font-semibold text-xl">Categories</h3>
+          <h3 className="text-zinc-600 dark:text-gray-200 font-semibold text-xl">
+            Categories
+          </h3>
           <CategoryCards userId={user.id} />
-          <h3 className="text-zinc-600 font-semibold text-xl pt-8">
+          <h3 className="text-zinc-600 dark:text-gray-200 font-semibold text-xl pt-8">
             Recent Uploads
           </h3>
           <div className="pt-4">

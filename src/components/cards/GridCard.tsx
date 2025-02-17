@@ -25,7 +25,7 @@ const GridCard = ({ files }: { files: Files[] }) => {
                       height={20}
                       width={20}
                     />
-                    <span className="text-sm text-zinc-700 file-name font-medium">
+                    <span className="text-sm text-zinc-700 dark:text-gray-200 file-name font-medium">
                       {file.name}
                     </span>
                   </div>

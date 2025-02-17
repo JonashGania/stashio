@@ -80,14 +80,17 @@ const FilesWrapper = ({
   return (
     <Tabs defaultValue="grid">
       <div className="pt-4 flex justify-between gap-4 items-center">
-        <TabsList>
-          <TabsTrigger value="grid" className="flex items-center gap-1 px-0">
+        <TabsList className="dark:bg-gray-950">
+          <TabsTrigger
+            value="grid"
+            className="flex items-center gap-1 px-0 transition-none"
+          >
             <Grid3X3 />
             Grid
           </TabsTrigger>
           <TabsTrigger
             value="table"
-            className="flex items-center gap-1 ml-4 px-0"
+            className="flex items-center gap-1 ml-4 px-0 transition-none"
           >
             <Rows2 />
             Table

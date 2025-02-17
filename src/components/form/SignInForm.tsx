@@ -93,7 +93,7 @@ const SignInForm = () => {
                 className="animate-spin"
               />
             ) : (
-              <span>Sign in</span>
+              <span className="text-white">Sign in</span>
             )}
           </Button>
         </form>
