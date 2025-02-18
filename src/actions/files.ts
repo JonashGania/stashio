@@ -69,15 +69,20 @@ export const getFiles = async (
   category: FileType,
   skip: number,
   take: number,
-  sortOption: string
+  sort: string,
+  searchQuery: string
 ) => {
   try {
-    const orderBy = sortOrderBy(sortOption);
+    const orderBy = sortOrderBy(sort);
 
     const files = await prisma.file.findMany({
       where: {
         userId: userId,
         category: category,
+        name: {
+          contains: searchQuery,
+          mode: "insensitive",
+        },
       },
       orderBy,
       skip,
