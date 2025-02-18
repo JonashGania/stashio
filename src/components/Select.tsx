@@ -1,3 +1,6 @@
+"use client";
+
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Label } from "./ui/label";
 import {
   Select,
@@ -6,16 +9,24 @@ import {
   SelectContent,
   SelectItem,
 } from "./ui/select";
+import { useMemo } from "react";
 
-interface SelectComponentProps {
-  sortOption: string;
-  setSortOption: (value: string) => void;
-}
+const SelectComponent = () => {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
-const SelectComponent = ({
-  sortOption,
-  setSortOption,
-}: SelectComponentProps) => {
+  const params = useMemo(
+    () => new URLSearchParams(searchParams),
+    [searchParams]
+  );
+  const sortOption = searchParams.get("sort") || "date-newest";
+
+  const handleSortChange = (option: string) => {
+    params.set("sort", option);
+    router.replace(`${pathname}?${params.toString()}`);
+  };
+
   return (
     <div className="flex gap-2 items-center">
       <Label htmlFor="sort-type" className="hidden phone:block">
@@ -24,7 +35,7 @@ const SelectComponent = ({
       <Label htmlFor="sort-type" className="block phone:hidden">
         Sort:
       </Label>
-      <Select value={sortOption} onValueChange={setSortOption}>
+      <Select value={sortOption} onValueChange={handleSortChange}>
         <SelectTrigger id="sort-type" className="w-[140px] sm:w-[180px]">
           <SelectValue />
         </SelectTrigger>

@@ -6,24 +6,27 @@ import { getFiles } from "@/actions/files";
 import { FileType } from "@prisma/client";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useInView } from "react-intersection-observer";
+import { useSearchParams } from "next/navigation";
+import { useEffect } from "react";
+import { columns } from "./Columns";
 import SelectComponent from "@/components/Select";
-import { useEffect, useState } from "react";
 import GridCard from "./cards/GridCard";
 import TableCard from "./cards/TableCard";
-import { columns } from "./Columns";
 
 interface FetchFilesProps {
   userId: string | undefined;
   category: FileType;
   pageParam: number;
-  sortOption: string;
+  sort: string;
+  searchQuery: string;
 }
 
 const fetchFiles = async ({
   userId,
   category,
   pageParam = 0,
-  sortOption,
+  sort,
+  searchQuery = "",
 }: FetchFilesProps) => {
   if (!userId) {
     throw new Error("User is not authenticated");
@@ -32,7 +35,7 @@ const fetchFiles = async ({
   const take = 20;
   const skip = pageParam * take;
 
-  const files = await getFiles(userId, category, skip, take, sortOption);
+  const files = await getFiles(userId, category, skip, take, sort, searchQuery);
   return files;
 };
 
@@ -43,7 +46,10 @@ const FilesWrapper = ({
   userId: string | undefined;
   category: FileType;
 }) => {
-  const [sortOption, setSortOption] = useState("date-newest");
+  const searchParams = useSearchParams();
+
+  const sort = searchParams.get("sort") || "date-newest";
+  const searchQuery = searchParams.get("search") || "";
 
   const {
     data,
@@ -53,9 +59,9 @@ const FilesWrapper = ({
     isFetchingNextPage,
     refetch,
   } = useInfiniteQuery({
-    queryKey: ["files", userId, category, sortOption],
+    queryKey: ["files", userId, category, sort, searchQuery],
     queryFn: ({ pageParam = 0 }) =>
-      fetchFiles({ userId, category, pageParam, sortOption }),
+      fetchFiles({ userId, category, pageParam, sort, searchQuery }),
     initialPageParam: 0,
     getNextPageParam: (lastPage, allPages) =>
       lastPage.length > 0 ? allPages.length : undefined,
@@ -67,7 +73,7 @@ const FilesWrapper = ({
 
   useEffect(() => {
     refetch();
-  }, [refetch, sortOption]);
+  }, [refetch, searchQuery, sort]);
 
   useEffect(() => {
     if (inView) {
@@ -96,14 +102,16 @@ const FilesWrapper = ({
             Table
           </TabsTrigger>
         </TabsList>
-        <SelectComponent
-          sortOption={sortOption}
-          setSortOption={setSortOption}
-        />
+
+        <SelectComponent />
       </div>
       <TabsContent value="grid">
         <div className="pt-4">
-          {isLoading ? (
+          {isError ? (
+            <div className="pt-8 flex items-center justify-center">
+              An error occured. Try reloading the page.
+            </div>
+          ) : isLoading ? (
             <div className="pt-8 flex justify-center items-center">
               <LoaderCircle
                 size={45}
@@ -133,7 +141,11 @@ const FilesWrapper = ({
       </TabsContent>
       <TabsContent value="table">
         <div className="pt-4">
-          {isLoading ? (
+          {isError ? (
+            <div className="pt-8 flex items-center justify-center">
+              An error occured. Try reloading the page.
+            </div>
+          ) : isLoading ? (
             <div className="pt-8 flex justify-center items-center">
               <LoaderCircle
                 size={45}

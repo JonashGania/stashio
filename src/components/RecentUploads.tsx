@@ -21,7 +21,11 @@ const RecentUploads = ({ userId }: { userId: string | undefined }) => {
 
   return (
     <>
-      {isLoading ? (
+      {isError ? (
+        <div className="pt-8 flex justify-center items-center">
+          An error occured. Please try reloading the page.
+        </div>
+      ) : isLoading ? (
         <div className="flex justify-center items-center pt-8">
           <LoaderCircle
             size={45}

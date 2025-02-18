@@ -1,16 +1,37 @@
 import { Files } from "@/types";
 import { getFileType, getFileIcon } from "@/lib/utils";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { Dispatch, SetStateAction } from "react";
 
 interface SearchFilterResultsProps {
   results: Files[] | undefined;
-  navigateToFile: (file: string) => void;
+  setOpen: Dispatch<SetStateAction<boolean>>;
+  searchQuery: string;
 }
 
 const SearchFilterResults = ({
   results,
-  navigateToFile,
+  setOpen,
+  searchQuery,
 }: SearchFilterResultsProps) => {
+  const router = useRouter();
+
+  const navigateToFile = (type: string) => {
+    const route =
+      type === "MEDIA"
+        ? type.charAt(0).toLowerCase() + type.toLowerCase().slice(1)
+        : type.charAt(0).toLowerCase() + type.toLowerCase().slice(1) + "s";
+
+    if (searchQuery) {
+      router.replace(`/${route}?search=${searchQuery}`);
+    } else {
+      router.replace(`/${route}`);
+    }
+
+    setOpen(false);
+  };
+
   return (
     <ul className="flex flex-col gap-2">
       {results?.map((result) => {

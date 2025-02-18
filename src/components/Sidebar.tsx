@@ -9,7 +9,7 @@ const Sidebars = () => {
   const pathname = usePathname();
 
   return (
-    <aside className="hidden md:block transition-[width] duration-300 h-svh sticky top-0 left-0 border-r border-r-zinc-200 dark:border-r-zinc-700 sidebar">
+    <aside className="hidden md:block transition-[width] duration-300 h-svh sticky top-0 left-0 border-r border-r-zinc-200 dark:border-r-zinc-800 sidebar">
       <div className="px-5 lg:px-4 pt-3 pb-5 flex flex-col">
         <Link href="/" className="flex items-center gap-1">
           <Image src="/assets/logo.svg" alt="logo" height={50} width={50} />
