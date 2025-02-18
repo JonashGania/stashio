@@ -9,35 +9,34 @@ import {
   DialogTrigger,
   DialogTitle,
 } from "./ui/dialog";
-import { useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getSearchedFiles } from "@/actions/files";
-import { useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
+import { useDebounce } from "use-debounce";
 import SearchFilterResults from "./SearchFilterResults";
 
 const Searchbar = ({ userId }: { userId: string | undefined }) => {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [open, setOpen] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
-  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const [searchQuery, setSearchQuery] = useState(
+    searchParams.get("search") || ""
+  );
+  const [open, setOpen] = useState(false);
+  const [debouncedSearch] = useDebounce(searchQuery, 300);
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  };
 
   const { data, isLoading, error } = useQuery({
-    queryKey: ["searchFiles", searchQuery, userId],
+    queryKey: ["searchFiles", debouncedSearch, userId],
     queryFn: () =>
-      getSearchedFiles({ userId: userId, search: searchQuery, limit: 15 }),
+      getSearchedFiles({ userId: userId, search: debouncedSearch, limit: 15 }),
     enabled: !!userId,
     refetchOnWindowFocus: false,
   });
-
-  const navigateToFile = (type: string) => {
-    const route =
-      type === "MEDIA"
-        ? type.charAt(0).toLowerCase() + type.toLowerCase().slice(1)
-        : type.charAt(0).toLowerCase() + type.toLowerCase().slice(1) + "s";
-
-    router.push(`/${route}`);
-    setOpen(false);
-  };
 
   return (
     <>
@@ -54,10 +53,11 @@ const Searchbar = ({ userId }: { userId: string | undefined }) => {
                 size={20}
                 className="flex-shrink-0 text-zinc-700 dark:text-zinc-300"
               />
+
               <input
                 type="text"
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={handleSearchChange}
                 placeholder="Type here to search..."
                 className="flex-1 bg-transparent text-base text-zinc-700 dark:text-gray-200 font-normal placeholder:text-base placeholder:font-normal placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none"
               />
@@ -65,7 +65,9 @@ const Searchbar = ({ userId }: { userId: string | undefined }) => {
           </DialogHeader>
           <div className="max-h-[250px] overflow-y-auto search">
             {error ? (
-              <div>Error fetching results: {error.message}</div>
+              <div className="text-sm">
+                Error fetching results: {error.message}
+              </div>
             ) : isLoading ? (
               <div className="py-3 flex justify-center items-center">
                 <LoaderCircle className="animate-spin text-violet-500" />
@@ -73,7 +75,8 @@ const Searchbar = ({ userId }: { userId: string | undefined }) => {
             ) : (
               <SearchFilterResults
                 results={data}
-                navigateToFile={navigateToFile}
+                setOpen={setOpen}
+                searchQuery={searchQuery}
               />
             )}
           </div>
@@ -93,7 +96,7 @@ const Searchbar = ({ userId }: { userId: string | undefined }) => {
           <input
             type="text"
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={handleSearchChange}
             onFocus={() => setOpen(true)}
             onBlur={(e) => {
               if (!searchRef.current?.contains(e.relatedTarget as Node)) {
@@ -113,7 +116,9 @@ const Searchbar = ({ userId }: { userId: string | undefined }) => {
             } absolute w-full max-h-[250px] p-4 bg-white dark:bg-gray-950 border border-gray-300 dark:border-gray-700 top-14 rounded-md z-50 overflow-y-auto search`}
           >
             {error ? (
-              <div>Error fetching results: {error.message}</div>
+              <div className="text-sm">
+                Error fetching results: {error.message}
+              </div>
             ) : isLoading ? (
               <div className="flex justify-center items-center">
                 <LoaderCircle className="animate-spin text-violet-500" />
@@ -121,7 +126,8 @@ const Searchbar = ({ userId }: { userId: string | undefined }) => {
             ) : (
               <SearchFilterResults
                 results={data}
-                navigateToFile={navigateToFile}
+                setOpen={setOpen}
+                searchQuery={searchQuery}
               />
             )}
           </div>
