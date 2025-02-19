@@ -1,3 +1,5 @@
+"use client";
+
 import { Files } from "@/types";
 import {
   DropdownMenu,
