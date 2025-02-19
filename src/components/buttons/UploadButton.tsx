@@ -66,7 +66,12 @@ const UploadButton = ({ userId }: { userId: string | undefined }) => {
                 return {
                   ...oldData,
                   pages: [
-                    [doneFile, ...oldData.pages[0]],
+                    [
+                      doneFile,
+                      ...(Array.isArray(oldData.pages[0])
+                        ? oldData.pages[0]
+                        : []),
+                    ],
                     ...oldData.pages.slice(1),
                   ],
                 };

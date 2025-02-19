@@ -46,7 +46,8 @@ const GridCard = ({ files }: { files: Files[] }) => {
                     fill
                     sizes="w-full"
                     className="rounded-sm object-cover"
-                    priority
+                    loading={files.indexOf(file) === 0 ? "eager" : "lazy"}
+                    priority={files.indexOf(file) === 0}
                   />
                 </Link>
               </div>

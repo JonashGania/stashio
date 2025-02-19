@@ -1,23 +1,13 @@
-"use client";
-
 import Link from "next/link";
 import Image from "next/image";
 import { getCategories, formatFileSize } from "@/lib/utils";
-import { getStatsByCategory } from "@/actions/files";
-import { useQuery } from "@tanstack/react-query";
+import { CategoryStats } from "@/types";
 
-const CategoryCards = ({ userId }: { userId: string | undefined }) => {
-  const { data } = useQuery({
-    queryKey: ["fileStats", userId],
-    queryFn: () => getStatsByCategory(userId),
-    enabled: !!userId,
-    refetchOnWindowFocus: false,
-  });
-
+const CategoryCards = ({ fileStats }: { fileStats: CategoryStats[] }) => {
   const categories = getCategories();
 
   const updatedCategories = categories.map((category) => {
-    const stat = data?.find((file) => {
+    const stat = fileStats?.find((file) => {
       const formatted =
         category.title === "Media"
           ? category.title.toUpperCase()

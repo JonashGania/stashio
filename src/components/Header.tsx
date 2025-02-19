@@ -12,6 +12,7 @@ import SignOutButton from "./buttons/SignOutButton";
 import ThemeButton from "./buttons/ThemeButton";
 import MobileNavigation from "./MobileNavigation";
 import { redirect } from "next/navigation";
+import { getAvailabeStorage } from "@/actions/files";
 
 const Header = async () => {
   const session = await auth();
@@ -20,6 +21,8 @@ const Header = async () => {
   if (!user) {
     redirect("/sign-in");
   }
+
+  const storageInfo = await getAvailabeStorage(user.id);
 
   return (
     <header className="w-full flex gap-4 justify-between py-3 px-6">
@@ -56,7 +59,7 @@ const Header = async () => {
 
       <div className="flex md:hidden items-center gap-2">
         <ThemeButton />
-        <MobileNavigation user={user} />
+        <MobileNavigation user={user} storageInfo={storageInfo} />
       </div>
     </header>
   );

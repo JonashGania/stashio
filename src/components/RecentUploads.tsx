@@ -1,42 +1,14 @@
-"use client";
-
-import { getRecentUploaded } from "@/actions/files";
 import { getFileType, getFileIcon, formatDateWithTime } from "@/lib/utils";
-import { useQuery } from "@tanstack/react-query";
-import { LoaderCircle } from "lucide-react";
 import DropdownAction from "./DropdownAction";
 import Image from "next/image";
+import { Files } from "@/types";
 
-const RecentUploads = ({ userId }: { userId: string | undefined }) => {
-  const {
-    data: files = [],
-    isLoading,
-    isError,
-  } = useQuery({
-    queryKey: ["recentUploads", userId],
-    queryFn: () => getRecentUploaded(userId),
-    enabled: !!userId,
-    refetchOnWindowFocus: false,
-  });
-
+const RecentUploads = ({ recentUploads }: { recentUploads: Files[] }) => {
   return (
     <>
-      {isError ? (
-        <div className="pt-8 flex justify-center items-center">
-          An error occured. Please try reloading the page.
-        </div>
-      ) : isLoading ? (
-        <div className="flex justify-center items-center pt-8">
-          <LoaderCircle
-            size={45}
-            color="#c4b5fd"
-            strokeWidth={3}
-            className="animate-spin "
-          />
-        </div>
-      ) : files.length > 0 ? (
+      {recentUploads.length > 0 ? (
         <ul className="flex flex-col gap-5">
-          {files.map((file) => {
+          {recentUploads.map((file) => {
             const { extension, type } = getFileType(file.name);
             const isImage = type === "IMAGE" && extension !== "svg";
 
@@ -66,7 +38,7 @@ const RecentUploads = ({ userId }: { userId: string | undefined }) => {
                 <DropdownAction
                   layout="table"
                   files={file}
-                  userId={userId as string}
+                  userId={file.userId}
                 />
               </li>
             );

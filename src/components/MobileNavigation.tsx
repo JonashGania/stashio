@@ -20,9 +20,15 @@ import UploadButton from "./buttons/UploadButton";
 import StorageChart from "./StorageChart";
 import SignOutButton from "./buttons/SignOutButton";
 import { Avatar, AvatarImage, AvatarFallback } from "./ui/avatar";
+import { StorageInfo } from "@/types";
 import { useState } from "react";
 
-const MobileNavigation = ({ user }: { user: User | undefined }) => {
+interface MobileNavigationProps {
+  user: User | undefined;
+  storageInfo: StorageInfo | null;
+}
+
+const MobileNavigation = ({ user, storageInfo }: MobileNavigationProps) => {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
 
@@ -103,7 +109,7 @@ const MobileNavigation = ({ user }: { user: User | undefined }) => {
           <UploadButton userId={user?.id} />
         </div>
         <Separator className="my-4" />
-        <StorageChart userId={user?.id} />
+        <StorageChart storageInfo={storageInfo} />
 
         <SheetFooter className="mt-auto">
           <SignOutButton position="mobile-nav" />

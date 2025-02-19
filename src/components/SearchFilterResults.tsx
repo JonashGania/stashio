@@ -32,6 +32,8 @@ const SearchFilterResults = ({
     setOpen(false);
   };
 
+  console.log(results);
+
   return (
     <ul className="flex flex-col gap-2">
       {results?.map((result) => {
@@ -44,7 +46,7 @@ const SearchFilterResults = ({
             className="flex cursor-default items-center gap-2 px-3 py-2 hover:bg-zinc-200 dark:hover:bg-zinc-800 rounded-sm"
             onClick={() => navigateToFile(result.category)}
           >
-            <div className="w-[30] h-[30px] relative">
+            <div className="h-[30px] w-[30px] relative">
               <Image
                 src={isImage ? result.fileUrl : getFileIcon(type, extension)}
                 alt="thumbnail"
