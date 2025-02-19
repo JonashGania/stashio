@@ -16,9 +16,8 @@ import { useState } from "react";
 import { useQueryClient, InfiniteData } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 import { deleteFile } from "@/actions/files";
-import { Files } from "@/types";
 import { getFileType } from "@/lib/utils";
-import { InfiniteDataResponse } from "@/types";
+import { InfiniteDataResponse, Files } from "@/types";
 
 interface DeleteDialogProps {
   file: Files;
@@ -63,7 +62,7 @@ const DeleteDialog = ({ file, userId }: DeleteDialogProps) => {
           return {
             ...oldData,
             pages: oldData.pages.map((page) =>
-              page.filter((f) => f.id !== file.id)
+              Array.isArray(page) ? page.filter((f) => f.id !== file.id) : []
             ),
           };
         }
@@ -106,7 +105,7 @@ const DeleteDialog = ({ file, userId }: DeleteDialogProps) => {
           </DialogClose>
           <Button
             onClick={handleDeleteFile}
-            className="bg-red-500 hover:bg-red-700"
+            className="bg-red-500 hover:bg-red-700 text-white"
             disabled={loading}
           >
             {loading ? (
