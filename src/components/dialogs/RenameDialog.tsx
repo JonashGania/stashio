@@ -1,6 +1,5 @@
 "use client";
 
-import { Files } from "@/types";
 import {
   Dialog,
   DialogTrigger,
@@ -19,7 +18,7 @@ import { useState } from "react";
 import { getFileType } from "@/lib/utils";
 import { useQueryClient, InfiniteData } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
-import { InfiniteDataResponse } from "@/types";
+import { InfiniteDataResponse, Files } from "@/types";
 
 interface RenameDialogProps {
   file: Files;
@@ -76,9 +75,13 @@ const RenameDialog = ({ file, userId }: RenameDialogProps) => {
           return {
             ...oldData,
             pages: oldData.pages.map((page) =>
-              page.map((f) =>
-                f.id === file.id ? { ...f, name: `${newName}.${extension}` } : f
-              )
+              Array.isArray(page)
+                ? page.map((f) =>
+                    f.id === file.id
+                      ? { ...f, name: `${newName}.${extension}` }
+                      : f
+                  )
+                : []
             ),
           };
         }
@@ -127,7 +130,7 @@ const RenameDialog = ({ file, userId }: RenameDialogProps) => {
           </DialogClose>
           <Button
             onClick={handleRename}
-            className="bg-violet-500 hover:bg-violet-700"
+            className="bg-violet-500 hover:bg-violet-700 text-white"
             disabled={loading}
           >
             {loading ? (
