@@ -17,3 +17,18 @@ export interface InfiniteDataResponse {
   pages: Files[][];
   pageParams: unknown[];
 }
+
+export interface StorageInfo {
+  totalSpace: bigint;
+  usedSpace: bigint;
+}
+
+export interface CategoryStats {
+  category: string;
+  _sum: {
+    size: number | null;
+  };
+  _count: {
+    id: number;
+  };
+}
