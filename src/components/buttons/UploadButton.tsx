@@ -10,7 +10,7 @@ import { useToast } from "@/hooks/use-toast";
 import { usePathname } from "next/navigation";
 import { InfiniteData, useQueryClient } from "@tanstack/react-query";
 import { getFileType } from "@/lib/utils";
-import { Files, InfiniteDataResponse } from "@/types";
+import { InfiniteDataResponse } from "@/types";
 
 const UploadButton = ({ userId }: { userId: string | undefined }) => {
   const [files, setFiles] = useState<File[]>([]);
@@ -21,41 +21,34 @@ const UploadButton = ({ userId }: { userId: string | undefined }) => {
 
   const onDrop = useCallback(
     async (acceptedFiles: File[]) => {
-      setFiles((prevFiles) => {
-        const newFiles = acceptedFiles.filter(
-          (newFile) => !prevFiles.some((file) => file.name === newFile.name)
-        );
-        return [...prevFiles, ...newFiles];
-      });
+      const validFiles = acceptedFiles.filter(
+        (file) => file.size <= maxFileSize
+      );
 
-      const uploads = acceptedFiles.map(async (file) => {
-        // if file is larger than 50Mb, return toast error
+      acceptedFiles.forEach((file) => {
         if (file.size > maxFileSize) {
-          setFiles((prevFiles) =>
-            prevFiles.filter((f) => f.name !== file.name)
-          );
-
-          return toast({
+          toast({
             variant: "destructive",
             title: `File is too large`,
             description: `${file.name} is too large. Max file size is 50Mb.`,
           });
         }
+      });
 
+      setFiles((prevFiles) => {
+        const newFiles = validFiles.filter(
+          (newFile) => !prevFiles.some((file) => file.name === newFile.name)
+        );
+        return [...prevFiles, ...newFiles];
+      });
+
+      const uploads = validFiles.map(async (file) => {
         const category = getFileType(file.name).type;
         try {
           const doneFile = await uploadFile(file, userId, pathname);
           if (doneFile) {
             setFiles((prevFiles) =>
               prevFiles.filter((f) => f.name !== doneFile.name)
-            );
-
-            queryClient.setQueryData(
-              ["recentUploads", userId],
-              (oldFiles: Files[] | undefined) => {
-                if (!oldFiles) return [doneFile];
-                return [doneFile, ...oldFiles];
-              }
             );
 
             queryClient.setQueriesData(
