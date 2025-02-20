@@ -32,8 +32,6 @@ const SearchFilterResults = ({
     setOpen(false);
   };
 
-  console.log(results);
-
   return (
     <ul className="flex flex-col gap-2">
       {results?.map((result) => {
