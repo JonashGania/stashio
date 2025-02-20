@@ -18,7 +18,7 @@ const Avatar = ({ user }: AvatarProps) => {
         />
       ) : (
         <div
-          className={`w-[28px] h-[28px] rounded-full bg-violet-500 font-medium text-white grid place-items-center`}
+          className={`w-[28px] h-[28px] rounded-full bg-sky-100 font-medium text-violet-500 grid place-items-center`}
         >
           {user?.name?.charAt(0).toUpperCase()}
         </div>
