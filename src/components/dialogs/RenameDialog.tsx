@@ -19,6 +19,7 @@ import { getFileType } from "@/lib/utils";
 import { useQueryClient, InfiniteData } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 import { InfiniteDataResponse, Files } from "@/types";
+import { usePathname } from "next/navigation";
 
 interface RenameDialogProps {
   file: Files;
@@ -33,6 +34,7 @@ const RenameDialog = ({ file, userId }: RenameDialogProps) => {
   const { toast } = useToast();
   const { extension, type } = getFileType(file.name);
   const queryClient = useQueryClient();
+  const pathname = usePathname();
 
   const handleRename = async () => {
     if (!newName.trim()) {
@@ -46,7 +48,7 @@ const RenameDialog = ({ file, userId }: RenameDialogProps) => {
 
     setLoading(true);
 
-    const res = await renameFile(file.id, newName, extension);
+    const res = await renameFile(file.id, newName, extension, pathname);
     setLoading(false);
 
     if (res.success) {
@@ -56,16 +58,6 @@ const RenameDialog = ({ file, userId }: RenameDialogProps) => {
         title: `File rename`,
         description: `${res.message}`,
       });
-
-      queryClient.setQueryData(
-        ["recentUploads", userId],
-        (oldFiles: Files[] | undefined) => {
-          if (!oldFiles) return oldFiles;
-          return oldFiles.map((f) =>
-            f.id === file.id ? { ...f, name: `${newName}.${extension}` } : f
-          );
-        }
-      );
 
       queryClient.setQueriesData(
         { queryKey: ["files", userId, type], exact: false },
@@ -86,11 +78,6 @@ const RenameDialog = ({ file, userId }: RenameDialogProps) => {
           };
         }
       );
-
-      queryClient.invalidateQueries({
-        queryKey: ["files", userId, type],
-        exact: false,
-      });
     } else {
       toast({
         variant: "destructive",
