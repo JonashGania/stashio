@@ -19,7 +19,6 @@ import Link from "next/link";
 import UploadButton from "./buttons/UploadButton";
 import StorageChart from "./StorageChart";
 import SignOutButton from "./buttons/SignOutButton";
-import { Avatar, AvatarImage, AvatarFallback } from "./ui/avatar";
 import { StorageInfo } from "@/types";
 import { useState } from "react";
 
@@ -47,12 +46,21 @@ const MobileNavigation = ({ user, storageInfo }: MobileNavigationProps) => {
         <SheetHeader className="text-left">
           <SheetTitle>
             <div className="flex gap-3 items-center mb-3">
-              <Avatar>
-                <AvatarImage src={user?.image ?? undefined} alt="avatar" />
-                <AvatarFallback className="bg-violet-500 text-white">
+              {user?.image ? (
+                <Image
+                  src={user.image}
+                  alt="avatar"
+                  width={40}
+                  height={40}
+                  className="rounded-full"
+                />
+              ) : (
+                <div
+                  className={`w-[40px] h-[40px] rounded-full bg-sky-100 font-medium text-violet-500 grid place-items-center`}
+                >
                   {user?.name?.charAt(0).toUpperCase()}
-                </AvatarFallback>
-              </Avatar>
+                </div>
+              )}
               <div className="flex flex-col gap-0 max-w-[130px] sm:max-w-[200px]">
                 <p className="font-medium text-base truncate capitalize">
                   {user?.name}
