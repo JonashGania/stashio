@@ -18,6 +18,7 @@ import { useToast } from "@/hooks/use-toast";
 import { deleteFile } from "@/actions/files";
 import { getFileType } from "@/lib/utils";
 import { InfiniteDataResponse, Files } from "@/types";
+import { usePathname } from "next/navigation";
 
 interface DeleteDialogProps {
   file: Files;
@@ -31,11 +32,12 @@ const DeleteDialog = ({ file, userId }: DeleteDialogProps) => {
   const { toast } = useToast();
   const category = getFileType(file.name).type;
   const queryClient = useQueryClient();
+  const pathname = usePathname();
 
   const handleDeleteFile = async () => {
     setLoading(true);
 
-    const res = await deleteFile(file.id, userId, file.fileId);
+    const res = await deleteFile(file.id, userId, file.fileId, pathname);
     setLoading(false);
 
     if (res.success) {
@@ -45,14 +47,6 @@ const DeleteDialog = ({ file, userId }: DeleteDialogProps) => {
         title: `Delete file`,
         description: `${res.message}`,
       });
-
-      queryClient.setQueryData(
-        ["recentUploads", userId],
-        (oldFiles: Files[] | undefined) => {
-          if (!oldFiles) return oldFiles;
-          return oldFiles.filter((f) => f.id !== file.id);
-        }
-      );
 
       queryClient.setQueriesData(
         { queryKey: ["files", userId, category], exact: false },
