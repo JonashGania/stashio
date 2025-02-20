@@ -99,7 +99,8 @@ export const getFiles = async (
 export const renameFile = async (
   fileId: string,
   name: string,
-  extension: string
+  extension: string,
+  path: string
 ) => {
   try {
     const newName = `${name}.${extension}`;
@@ -122,6 +123,7 @@ export const renameFile = async (
       },
     });
 
+    revalidatePath(path);
     return { success: true, message: "File has been successfully renamed." };
   } catch (error) {
     console.error("Failed to rename file", error);
@@ -132,7 +134,8 @@ export const renameFile = async (
 export const deleteFile = async (
   fileId: string,
   userId: string | undefined,
-  bucketFileId: string
+  bucketFileId: string,
+  path: string
 ) => {
   const { storage } = await appwriteClient();
 
@@ -150,6 +153,7 @@ export const deleteFile = async (
 
     await prisma.file.delete({ where: { userId: userId, id: fileId } });
 
+    revalidatePath(path);
     return { success: true, message: "File has been successfully deleted." };
   } catch (error) {
     console.error("Failed to delete file", error);
