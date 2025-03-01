@@ -36,8 +36,8 @@ const SignInForm = () => {
 
     const response = await login(data);
 
-    if (response?.error) {
-      setGlobalError(response.error);
+    if (!response?.success) {
+      setGlobalError(response.message);
     } else {
       router.push("/");
     }
