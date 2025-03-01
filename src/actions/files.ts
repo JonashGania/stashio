@@ -8,6 +8,7 @@ import { InputFile } from "node-appwrite/file";
 import { getFileUrl, getFileType, sortOrderBy } from "@/lib/utils";
 import { revalidatePath } from "next/cache";
 import { FileType } from "@prisma/client";
+import { auth } from "@/auth";
 
 export const uploadFile = async (
   file: File,
@@ -15,8 +16,14 @@ export const uploadFile = async (
   path: string
 ) => {
   const { storage } = await appwriteClient();
-
   let bucketFile;
+
+  const session = await auth();
+  const user = session?.user;
+
+  if (!user) {
+    throw new Error("You are not authenticated perform this action");
+  }
 
   if (userId) {
     try {
@@ -72,6 +79,13 @@ export const getFiles = async (
   sort: string,
   searchQuery: string
 ) => {
+  const session = await auth();
+  const user = session?.user;
+
+  if (!user) {
+    throw new Error("You are not authenticated perform this action");
+  }
+
   try {
     const orderBy = sortOrderBy(sort);
 
@@ -103,6 +117,12 @@ export const renameFile = async (
   path: string
 ) => {
   try {
+    const session = await auth();
+    const user = session?.user;
+
+    if (!user) {
+      throw new Error("You are not authenticated perform this action");
+    }
     const newName = `${name}.${extension}`;
 
     const existingFile = await prisma.file.findUnique({
@@ -139,6 +159,13 @@ export const deleteFile = async (
 ) => {
   const { storage } = await appwriteClient();
 
+  const session = await auth();
+  const user = session?.user;
+
+  if (!user) {
+    throw new Error("You are not authenticated perform this action");
+  }
+
   try {
     const existingFile = await prisma.file.findUnique({
       where: { id: fileId },
@@ -162,6 +189,13 @@ export const deleteFile = async (
 };
 
 export const getRecentUploaded = async (userId: string | undefined) => {
+  const session = await auth();
+  const user = session?.user;
+
+  if (!user) {
+    throw new Error("You are not authenticated perform this action");
+  }
+
   try {
     const files = await prisma.file.findMany({
       where: { userId: userId },
@@ -178,6 +212,13 @@ export const getRecentUploaded = async (userId: string | undefined) => {
 };
 
 export const getStatsByCategory = async (userId: string | undefined) => {
+  const session = await auth();
+  const user = session?.user;
+
+  if (!user) {
+    throw new Error("You are not authenticated perform this action");
+  }
+
   try {
     const files = await prisma.file.groupBy({
       by: ["category"],
@@ -194,6 +235,13 @@ export const getStatsByCategory = async (userId: string | undefined) => {
 };
 
 export const getAvailabeStorage = async (userId: string | undefined) => {
+  const session = await auth();
+  const user = session?.user;
+
+  if (!user) {
+    throw new Error("You are not authenticated perform this action");
+  }
+
   try {
     const storageInfo = await prisma.user.findUnique({
       where: { id: userId },
@@ -219,6 +267,13 @@ export const getSearchedFiles = async ({
   limit?: number;
   userId: string | undefined;
 }) => {
+  const session = await auth();
+  const user = session?.user;
+
+  if (!user) {
+    throw new Error("You are not authenticated perform this action");
+  }
+
   try {
     const files = await prisma.file.findMany({
       where: {
