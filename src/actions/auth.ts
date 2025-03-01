@@ -80,12 +80,12 @@ export const login = async (data: z.infer<typeof LoginSchema>) => {
 
     const user = await getUserFromDb(email);
     if (!user || !user.password) {
-      return { error: "This email does not exist." };
+      return { success: false, message: "This email does not exist." };
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
-      return { error: "Password is incorrect" };
+      return { success: false, message: "Password is incorrect" };
     }
 
     await signIn("credentials", {
@@ -94,18 +94,22 @@ export const login = async (data: z.infer<typeof LoginSchema>) => {
       redirect: false,
     });
 
-    return { message: "Login successful" };
+    return { success: true, message: "Login successful" };
   } catch (error) {
     if (error instanceof AuthError) {
       if (error.type === "CredentialsSignin") {
-        return { error: "Invalid credentials" };
+        return { success: false, message: "Invalid credentials" };
       } else {
         return {
-          error: "An unexpected error occured. Please try again later.",
+          success: false,
+          message: "An unexpected error occured. Please try again later.",
         };
       }
     }
 
-    throw error;
+    return {
+      success: false,
+      message: "An unexpected error occured. Please try again later.",
+    };
   }
 };
