@@ -26,7 +26,7 @@ const RecentUploads = ({ recentUploads }: { recentUploads: Files[] }) => {
                       width={50}
                       height={50}
                       loading={imageCount++ < 15 ? "eager" : "lazy"}
-                      className="w-[50] h-[50] rounded-lg object-cover"
+                      className="w-[50px] h-[50px] rounded-lg object-cover"
                     />
                   </div>
                   <div className="flex-1 flex flex-col ">
