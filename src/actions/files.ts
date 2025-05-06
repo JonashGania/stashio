@@ -9,6 +9,7 @@ import { getFileUrl, getFileType, sortOrderBy } from "@/lib/utils";
 import { revalidatePath } from "next/cache";
 import { FileType } from "@prisma/client";
 import { auth } from "@/auth";
+import { unstable_cache } from "next/cache";
 
 export const uploadFile = async (
   file: File,
@@ -188,15 +189,10 @@ export const deleteFile = async (
   }
 };
 
-export const getRecentUploaded = async (userId: string | undefined) => {
-  const session = await auth();
-  const user = session?.user;
+export const getRecentUploaded = unstable_cache(
+  async (userId: string | undefined) => {
+    if (!userId) throw new Error("No userId provided");
 
-  if (!user) {
-    throw new Error("You are not authenticated perform this action");
-  }
-
-  try {
     const files = await prisma.file.findMany({
       where: { userId: userId },
       orderBy: { createdAt: "desc" },
@@ -205,21 +201,15 @@ export const getRecentUploaded = async (userId: string | undefined) => {
     });
 
     return files;
-  } catch (error) {
-    console.error("Failed to get recent uploads", error);
-    throw new Error("Failed to fetch recent uploads");
-  }
-};
+  },
+  ["getRecentUploads"],
+  { revalidate: 60 * 60 * 2 }
+);
 
-export const getStatsByCategory = async (userId: string | undefined) => {
-  const session = await auth();
-  const user = session?.user;
+export const getStatsByCategory = unstable_cache(
+  async (userId: string | undefined) => {
+    if (!userId) throw new Error("No userId provided");
 
-  if (!user) {
-    throw new Error("You are not authenticated perform this action");
-  }
-
-  try {
     const files = await prisma.file.groupBy({
       by: ["category"],
       where: { userId: userId },
@@ -228,21 +218,17 @@ export const getStatsByCategory = async (userId: string | undefined) => {
     });
 
     return files;
-  } catch (error) {
-    console.error("Failed to get category file stats", error);
-    throw new Error("Failed to fetch category file stats");
+  },
+  ["getStats"],
+  {
+    revalidate: 60 * 60 * 2,
   }
-};
+);
 
-export const getAvailabeStorage = async (userId: string | undefined) => {
-  const session = await auth();
-  const user = session?.user;
+export const getAvailabeStorage = unstable_cache(
+  async (userId: string | undefined) => {
+    if (!userId) throw new Error("No userId provided");
 
-  if (!user) {
-    throw new Error("You are not authenticated perform this action");
-  }
-
-  try {
     const storageInfo = await prisma.user.findUnique({
       where: { id: userId },
       select: {
@@ -251,12 +237,22 @@ export const getAvailabeStorage = async (userId: string | undefined) => {
       },
     });
 
-    return storageInfo;
-  } catch (error) {
-    console.error("Failed to get user storage info", error);
-    throw new Error("Failed to fetch user storage info");
+    return {
+      totalSpace:
+        typeof storageInfo?.totalSpace === "bigint"
+          ? Number(storageInfo.totalSpace)
+          : storageInfo?.totalSpace,
+      usedSpace:
+        typeof storageInfo?.usedSpace === "bigint"
+          ? Number(storageInfo.usedSpace)
+          : storageInfo?.usedSpace,
+    };
+  },
+  ["getStorage"],
+  {
+    revalidate: 60 * 60 * 2,
   }
-};
+);
 
 export const getSearchedFiles = async ({
   search = "",
