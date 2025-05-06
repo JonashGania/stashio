@@ -19,8 +19,8 @@ export interface InfiniteDataResponse {
 }
 
 export interface StorageInfo {
-  totalSpace: bigint;
-  usedSpace: bigint;
+  totalSpace: number | undefined;
+  usedSpace: number | undefined;
 }
 
 export interface CategoryStats {
