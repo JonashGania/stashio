@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 const GridCard = ({ files }: { files: Files[] }) => {
+  let imageCount = 0;
   return (
     <>
       {files.length === 0 ? (
@@ -46,7 +47,7 @@ const GridCard = ({ files }: { files: Files[] }) => {
                     fill
                     sizes="w-full"
                     className="rounded-sm object-cover"
-                    loading={files.indexOf(file) === 0 ? "eager" : "lazy"}
+                    loading={imageCount++ < 15 ? "eager" : "lazy"}
                     priority={files.indexOf(file) === 0}
                   />
                 </Link>
