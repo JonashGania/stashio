@@ -1,5 +1,4 @@
 import { auth } from "@/auth";
-import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import {
   getStatsByCategory,
@@ -14,16 +13,12 @@ import StorageChartSkeleton from "@/components/skeletons/StorageChartSkeleton";
 
 const Dashboard = async () => {
   const session = await auth();
-  const user = session?.user;
-
-  if (!user) {
-    redirect("sign-in");
-  }
+  const userId = session?.user?.id;
 
   const [categoryStats, recentUploads, storageInfo] = await Promise.all([
-    getStatsByCategory(user.id),
-    getRecentUploaded(user.id),
-    getAvailabeStorage(user.id),
+    getStatsByCategory(userId),
+    getRecentUploaded(userId),
+    getAvailabeStorage(userId),
   ]);
 
   return (
