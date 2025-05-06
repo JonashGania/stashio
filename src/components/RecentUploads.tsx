@@ -4,6 +4,8 @@ import Image from "next/image";
 import { Files } from "@/types";
 
 const RecentUploads = ({ recentUploads }: { recentUploads: Files[] }) => {
+  let imageCount = 0;
+
   return (
     <>
       {recentUploads.length > 0 ? (
@@ -15,15 +17,16 @@ const RecentUploads = ({ recentUploads }: { recentUploads: Files[] }) => {
             return (
               <li key={file.id} className="flex justify-between gap-4">
                 <div className="flex items-center gap-4">
-                  <div className="w-[50px] h-[50px] relative">
+                  <div className="relative">
                     <Image
                       src={
                         isImage ? file.fileUrl : getFileIcon(type, extension)
                       }
                       alt="thumbnail"
-                      fill
-                      sizes="w-full"
-                      className="rounded-lg object-cover"
+                      width={50}
+                      height={50}
+                      loading={imageCount++ < 15 ? "eager" : "lazy"}
+                      className="w-[50] h-[50] rounded-lg object-cover"
                     />
                   </div>
                   <div className="flex-1 flex flex-col ">
