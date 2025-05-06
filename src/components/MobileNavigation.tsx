@@ -23,7 +23,7 @@ import { StorageInfo } from "@/types";
 import { useState } from "react";
 
 interface MobileNavigationProps {
-  user: User | undefined;
+  user: User;
   storageInfo: StorageInfo | null;
 }
 
