@@ -1,5 +1,4 @@
 import { ChevronDown } from "lucide-react";
-import { auth } from "@/auth";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -11,17 +10,10 @@ import UploadButton from "./buttons/UploadButton";
 import SignOutButton from "./buttons/SignOutButton";
 import ThemeButton from "./buttons/ThemeButton";
 import MobileNavigation from "./MobileNavigation";
-import { redirect } from "next/navigation";
 import { getAvailabeStorage } from "@/actions/files";
+import { User } from "next-auth";
 
-const Header = async () => {
-  const session = await auth();
-  const user = session?.user;
-
-  if (!user) {
-    redirect("/sign-in");
-  }
-
+const Header = async ({ user }: { user: User }) => {
   const storageInfo = await getAvailabeStorage(user.id);
 
   return (
