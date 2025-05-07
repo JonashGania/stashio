@@ -170,7 +170,7 @@ export const deleteFile = async (
   try {
     const existingFile = await prisma.file.findUnique({
       where: { id: fileId },
-      select: { userId: true },
+      select: { userId: true, size: true },
     });
 
     if (!existingFile) {
@@ -180,6 +180,11 @@ export const deleteFile = async (
     await storage.deleteFile(appwriteConfig.bucketId, bucketFileId);
 
     await prisma.file.delete({ where: { userId: userId, id: fileId } });
+
+    await prisma.user.update({
+      where: { id: userId },
+      data: { usedSpace: { decrement: existingFile.size } },
+    });
 
     revalidatePath(path);
     return { success: true, message: "File has been successfully deleted." };
@@ -254,23 +259,18 @@ export const getAvailabeStorage = unstable_cache(
   }
 );
 
-export const getSearchedFiles = async ({
-  search = "",
-  limit = 15,
-  userId,
-}: {
-  search?: string;
-  limit?: number;
-  userId: string | undefined;
-}) => {
-  const session = await auth();
-  const user = session?.user;
+export const getSearchedFiles = unstable_cache(
+  async ({
+    search = "",
+    limit = 15,
+    userId,
+  }: {
+    search?: string;
+    limit?: number;
+    userId: string | undefined;
+  }) => {
+    if (!userId) throw new Error("No userId provided");
 
-  if (!user) {
-    throw new Error("You are not authenticated perform this action");
-  }
-
-  try {
     const files = await prisma.file.findMany({
       where: {
         userId: userId,
@@ -284,8 +284,9 @@ export const getSearchedFiles = async ({
     });
 
     return files;
-  } catch (error) {
-    console.error("Error fetching files", error);
-    throw new Error("Error fetching files");
+  },
+  ["searchResults"],
+  {
+    revalidate: 60 * 60 * 2,
   }
-};
+);
