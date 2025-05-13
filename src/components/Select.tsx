@@ -1,6 +1,5 @@
 "use client";
 
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Label } from "./ui/label";
 import {
   Select,
@@ -9,24 +8,13 @@ import {
   SelectContent,
   SelectItem,
 } from "./ui/select";
-import { useMemo } from "react";
 
-const SelectComponent = () => {
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
+interface SelectComponentProps {
+  sort: string;
+  setSort: (value: string) => void;
+}
 
-  const params = useMemo(
-    () => new URLSearchParams(searchParams),
-    [searchParams]
-  );
-  const sortOption = searchParams.get("sort") || "date-newest";
-
-  const handleSortChange = (option: string) => {
-    params.set("sort", option);
-    router.replace(`${pathname}?${params.toString()}`);
-  };
-
+const SelectComponent = ({ sort, setSort }: SelectComponentProps) => {
   return (
     <div className="flex gap-2 items-center">
       <Label htmlFor="sort-type" className="hidden phone:block">
@@ -35,7 +23,7 @@ const SelectComponent = () => {
       <Label htmlFor="sort-type" className="block phone:hidden">
         Sort:
       </Label>
-      <Select value={sortOption} onValueChange={handleSortChange}>
+      <Select value={sort} onValueChange={setSort}>
         <SelectTrigger id="sort-type" className="w-[140px] sm:w-[180px]">
           <SelectValue />
         </SelectTrigger>
@@ -53,16 +41,16 @@ const SelectComponent = () => {
             Date (Oldest)
           </SelectItem>
           <SelectItem
-            value="name-a-z"
+            value="name-asc"
             className="focus:bg-zinc-300 dark:focus:bg-zinc-800"
           >
-            Name A-Z
+            Name (Ascending)
           </SelectItem>
           <SelectItem
-            value="name-z-a"
+            value="name-desc"
             className="focus:bg-zinc-300 dark:focus:bg-zinc-800"
           >
-            Name Z-A
+            Name (Descending)
           </SelectItem>
           <SelectItem
             value="size-highest"
