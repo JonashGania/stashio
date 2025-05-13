@@ -77,7 +77,6 @@ export const getFiles = async (
   category: FileType,
   skip: number,
   take: number,
-  sort: string,
   searchQuery: string
 ) => {
   const session = await auth();
@@ -88,8 +87,6 @@ export const getFiles = async (
   }
 
   try {
-    const orderBy = sortOrderBy(sort);
-
     const files = await prisma.file.findMany({
       where: {
         userId: userId,
@@ -99,7 +96,6 @@ export const getFiles = async (
           mode: "insensitive",
         },
       },
-      orderBy,
       skip,
       take,
     });
