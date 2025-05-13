@@ -5,7 +5,7 @@ import { appwriteConfig } from "@/lib/appwrite/config";
 import { prisma } from "@/lib/prisma";
 import { ID } from "node-appwrite";
 import { InputFile } from "node-appwrite/file";
-import { getFileUrl, getFileType, sortOrderBy } from "@/lib/utils";
+import { getFileUrl, getFileType } from "@/lib/utils";
 import { revalidatePath } from "next/cache";
 import { FileType } from "@prisma/client";
 import { auth } from "@/auth";
