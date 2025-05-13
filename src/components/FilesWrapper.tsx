@@ -7,7 +7,7 @@ import { FileType } from "@prisma/client";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useInView } from "react-intersection-observer";
 import { useSearchParams } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { columns } from "./Columns";
 import SelectComponent from "@/components/Select";
 import GridCard from "./cards/GridCard";
@@ -17,7 +17,6 @@ interface FetchFilesProps {
   userId: string | undefined;
   category: FileType;
   pageParam: number;
-  sort: string;
   searchQuery: string;
 }
 
@@ -25,7 +24,6 @@ const fetchFiles = async ({
   userId,
   category,
   pageParam = 0,
-  sort,
   searchQuery = "",
 }: FetchFilesProps) => {
   if (!userId) {
@@ -35,7 +33,7 @@ const fetchFiles = async ({
   const take = 20;
   const skip = pageParam * take;
 
-  const files = await getFiles(userId, category, skip, take, sort, searchQuery);
+  const files = await getFiles(userId, category, skip, take, searchQuery);
   return files;
 };
 
@@ -46,9 +44,9 @@ const FilesWrapper = ({
   userId: string | undefined;
   category: FileType;
 }) => {
-  const searchParams = useSearchParams();
+  const [sort, setSort] = useState("date-newest");
 
-  const sort = searchParams.get("sort") || "date-newest";
+  const searchParams = useSearchParams();
   const searchQuery = searchParams.get("search") || "";
 
   const {
@@ -59,9 +57,9 @@ const FilesWrapper = ({
     isFetchingNextPage,
     refetch,
   } = useInfiniteQuery({
-    queryKey: ["files", userId, category, sort, searchQuery],
+    queryKey: ["files", userId, category, searchQuery],
     queryFn: ({ pageParam = 0 }) =>
-      fetchFiles({ userId, category, pageParam, sort, searchQuery }),
+      fetchFiles({ userId, category, pageParam, searchQuery }),
     initialPageParam: 0,
     getNextPageParam: (lastPage, allPages) =>
       lastPage.length > 0 ? allPages.length : undefined,
@@ -73,7 +71,7 @@ const FilesWrapper = ({
 
   useEffect(() => {
     refetch();
-  }, [refetch, searchQuery, sort]);
+  }, [refetch, searchQuery]);
 
   useEffect(() => {
     if (inView) {
@@ -82,6 +80,29 @@ const FilesWrapper = ({
   }, [inView, fetchNextPage]);
 
   const allFiles = data?.pages.flat() ?? [];
+
+  const sortedFiles = [...allFiles].sort((a, b) => {
+    switch (sort) {
+      case "date-newest":
+        return (
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
+      case "date-oldest":
+        return (
+          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+        );
+      case "name-asc":
+        return a.name.localeCompare(b.name);
+      case "name-desc":
+        return b.name.localeCompare(a.name);
+      case "size-highest":
+        return b.size - a.size;
+      case "size-lowest":
+        return a.size - b.size;
+      default:
+        return 0;
+    }
+  });
 
   return (
     <Tabs defaultValue="grid">
@@ -103,7 +124,7 @@ const FilesWrapper = ({
           </TabsTrigger>
         </TabsList>
 
-        <SelectComponent />
+        <SelectComponent sort={sort} setSort={setSort} />
       </div>
       <TabsContent value="grid">
         <div className="pt-4">
@@ -122,8 +143,8 @@ const FilesWrapper = ({
             </div>
           ) : (
             <>
-              <GridCard files={allFiles} />
-              {allFiles.length >= 19 && (
+              <GridCard files={sortedFiles} />
+              {sortedFiles.length >= 19 && (
                 <div ref={ref} className="flex justify-center items-center">
                   {isFetchingNextPage && (
                     <LoaderCircle
@@ -156,8 +177,8 @@ const FilesWrapper = ({
             </div>
           ) : (
             <>
-              <TableCard columns={columns} data={allFiles} />
-              {allFiles.length >= 19 && (
+              <TableCard columns={columns} data={sortedFiles} />
+              {sortedFiles.length >= 19 && (
                 <div ref={ref} className="flex justify-center items-center">
                   {isFetchingNextPage && (
                     <LoaderCircle
