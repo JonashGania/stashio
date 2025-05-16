@@ -63,6 +63,7 @@ const SignUpForm = () => {
                     type="text"
                     placeholder="Name"
                     autoComplete="off"
+                    disabled={form.formState.isSubmitting}
                     {...field}
                   />
                 </FormControl>
@@ -79,6 +80,7 @@ const SignUpForm = () => {
                   <Input
                     type="email"
                     placeholder="example@email.com"
+                    disabled={form.formState.isSubmitting}
                     {...field}
                   />
                 </FormControl>
@@ -92,7 +94,12 @@ const SignUpForm = () => {
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <Input type="password" placeholder="Password" {...field} />
+                  <Input
+                    type="password"
+                    placeholder="Password"
+                    disabled={form.formState.isSubmitting}
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
