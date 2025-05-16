@@ -60,6 +60,7 @@ const SignInForm = () => {
                 <FormControl>
                   <Input
                     type="email"
+                    disabled={form.formState.isSubmitting}
                     placeholder="example@email.com"
                     {...field}
                   />
@@ -74,7 +75,12 @@ const SignInForm = () => {
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <Input type="password" placeholder="Password" {...field} />
+                  <Input
+                    type="password"
+                    disabled={form.formState.isSubmitting}
+                    placeholder="Password"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
