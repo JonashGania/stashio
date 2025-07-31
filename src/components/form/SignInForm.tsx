@@ -11,15 +11,17 @@ import {
   FormItem,
   FormField,
   FormMessage,
+  FormLabel,
 } from "../ui/form";
 import { Button } from "../ui/button";
 import { login } from "@/actions/auth";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { LoaderCircle } from "lucide-react";
+import { LoaderCircle, Eye, EyeOff } from "lucide-react";
 
 const SignInForm = () => {
   const [globalError, setGlobalError] = useState<string | null>(null);
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
@@ -51,17 +53,19 @@ const SignInForm = () => {
         </h3>
       )}
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+        <form onSubmit={form.handleSubmit(onSubmit)}>
           <FormField
             control={form.control}
             name="email"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="space-y-1 mb-4">
+                <FormLabel className="text-neutral-700">Email</FormLabel>
                 <FormControl>
                   <Input
                     type="email"
                     disabled={form.formState.isSubmitting}
-                    placeholder="example@email.com"
+                    placeholder="youremail@example.com"
+                    className="mt-0 h-11 rounded-xl focus-visible:outline-2 focus-visible:outline-violet-300 focus-visible:ring-violet-500 focus-visible:border-transparent"
                     {...field}
                   />
                 </FormControl>
@@ -73,22 +77,43 @@ const SignInForm = () => {
             control={form.control}
             name="password"
             render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <Input
-                    type="password"
-                    disabled={form.formState.isSubmitting}
-                    placeholder="Password"
-                    {...field}
-                  />
-                </FormControl>
+              <FormItem className="space-y-1 mb-6">
+                <div className="flex items-center justify-between">
+                  <FormLabel className="text-neutral-700">Password</FormLabel>
+                  <span className="text-gray-500 hover:text-neutral-700 text-sm">
+                    Forgot Password?
+                  </span>
+                </div>
+
+                <div className="relative">
+                  <FormControl>
+                    <Input
+                      type={`${isPasswordVisible ? "text" : "password"}`}
+                      disabled={form.formState.isSubmitting}
+                      placeholder="•••••••••••••"
+                      className="mt-0 h-11 rounded-xl focus-visible:outline-2 focus-visible:outline-violet-300 focus-visible:ring-violet-500 focus-visible:border-transparent pr-10"
+                      {...field}
+                    />
+                  </FormControl>
+                  <button
+                    type="button"
+                    className="absolute right-3 transform -translate-y-[30px]"
+                    onClick={() => setIsPasswordVisible(!isPasswordVisible)}
+                  >
+                    {isPasswordVisible ? (
+                      <Eye size={18} className="text-gray-500" />
+                    ) : (
+                      <EyeOff size={18} className="text-gray-500" />
+                    )}
+                  </button>
+                </div>
                 <FormMessage />
               </FormItem>
             )}
           />
           <Button
             type="submit"
-            className="w-full bg-violet-500 hover:bg-violet-500"
+            className="w-full bg-violet-500 hover:bg-violet-600 h-11 rounded-xl"
             disabled={form.formState.isSubmitting}
           >
             {form.formState.isSubmitting ? (
@@ -99,7 +124,7 @@ const SignInForm = () => {
                 className="animate-spin"
               />
             ) : (
-              <span className="text-white">Sign in</span>
+              <span className="text-white text-lg">Sign in</span>
             )}
           </Button>
         </form>
