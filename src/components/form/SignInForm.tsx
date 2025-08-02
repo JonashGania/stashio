@@ -18,6 +18,7 @@ import { login } from "@/actions/auth";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { LoaderCircle, Eye, EyeOff } from "lucide-react";
+import Link from "next/link";
 
 const SignInForm = () => {
   const [globalError, setGlobalError] = useState<string | null>(null);
@@ -80,9 +81,12 @@ const SignInForm = () => {
               <FormItem className="space-y-1 mb-6">
                 <div className="flex items-center justify-between">
                   <FormLabel className="text-neutral-700">Password</FormLabel>
-                  <span className="text-gray-500 hover:text-neutral-700 text-sm">
+                  <Link
+                    href="/forgot-password"
+                    className="text-gray-500 hover:text-neutral-700 text-sm"
+                  >
                     Forgot Password?
-                  </span>
+                  </Link>
                 </div>
 
                 <div className="relative">
