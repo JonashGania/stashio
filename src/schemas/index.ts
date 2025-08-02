@@ -22,3 +22,9 @@ export const RegisterSchema = z.object({
     .min(8, "Password must be at least 8 characters")
     .max(32, "Password must not exceed 32 characters"),
 });
+
+export const ResetSchema = z.object({
+  email: z.string().email({
+    message: "Email address is required",
+  }),
+});
