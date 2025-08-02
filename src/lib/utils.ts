@@ -2,6 +2,8 @@ import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { FileType, Prisma } from "@prisma/client";
 import { format } from "date-fns";
+import { prisma } from "./prisma";
+import uuid4 from "uuid4";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -177,4 +179,53 @@ export const sortOrderBy = (
     default:
       return { createdAt: "desc" as Prisma.SortOrder };
   }
+};
+
+export const getPasswordResetTokenByToken = async (token: string) => {
+  try {
+    const passwordResetToken = await prisma.passwordResetToken.findUnique({
+      where: { token },
+    });
+
+    return passwordResetToken;
+  } catch (error) {
+    console.error("Error getting password token", error);
+    return null;
+  }
+};
+
+export const getPasswordResetTokenByEmail = async (email: string) => {
+  try {
+    const passwordResetToken = await prisma.passwordResetToken.findFirst({
+      where: { email },
+    });
+
+    return passwordResetToken;
+  } catch (error) {
+    console.error("Error getting password token", error);
+    return null;
+  }
+};
+
+export const generatePasswordResetToken = async (email: string) => {
+  const token = uuid4();
+  const expires = new Date(new Date().getTime() + 3600 * 1000);
+
+  const existingToken = await getPasswordResetTokenByEmail(email);
+
+  if (existingToken) {
+    await prisma.passwordResetToken.delete({
+      where: { id: existingToken.id },
+    });
+  }
+
+  const passwordResetToken = await prisma.passwordResetToken.create({
+    data: {
+      token,
+      email,
+      expires,
+    },
+  });
+
+  return passwordResetToken;
 };
