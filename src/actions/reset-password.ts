@@ -1,12 +1,17 @@
 "use server";
 
 import ResetPasswordTemplate from "@/components/email/reset-password-template";
-import { generatePasswordResetToken } from "@/lib/utils";
+import {
+  generatePasswordResetToken,
+  getPasswordResetTokenByToken,
+} from "@/lib/utils";
 import { z } from "zod";
-import { ResetSchema } from "@/schemas";
+import { NewPasswordSchema, ResetSchema } from "@/schemas";
 import { getUserFromDb } from "./auth";
-import nodemailer from "nodemailer";
 import { render } from "@react-email/render";
+import { prisma } from "@/lib/prisma";
+import nodemailer from "nodemailer";
+import bcrypt from "bcryptjs";
 
 const domain =
   process.env.NODE_ENV === "production"
@@ -51,22 +56,61 @@ export const resetPassword = async (data: z.infer<typeof ResetSchema>) => {
 
     await transporter.sendMail(mailOptions);
 
-    // const response = await resend.emails.send({
-    //   from: "Acme <onboarding@resend.dev>",
-    //   to: email,
-    //   subject: "Hello world",
-    //   react: ResetPasswordTemplate({
-    //     userFirstname: existingUser.name,
-    //     resetPasswordLink: `${domain}/reset-password?token=${passwordResetToken.token}`,
-    //   }),
-    // });
-
     return {
       success: true,
       message: "Check your email for reset link",
     };
   } catch (error) {
     console.error("Error resetting password", error);
+    return {
+      success: false,
+      message: "Something went wrong. Please try again later.",
+    };
+  }
+};
+
+export const newPassword = async (
+  data: z.infer<typeof NewPasswordSchema>,
+  token?: string | null
+) => {
+  try {
+    if (!token) {
+      return { success: false, message: "Missing token!" };
+    }
+
+    const existingToken = await getPasswordResetTokenByToken(token);
+    if (!existingToken) {
+      return { success: false, message: "Invalid token" };
+    }
+
+    const hasExpired = new Date(existingToken.expires) < new Date();
+    if (hasExpired) {
+      return { success: false, message: "Token has expired" };
+    }
+
+    const existingUser = await getUserFromDb(existingToken.email);
+    if (!existingUser) {
+      return { success: false, message: "Email not found!" };
+    }
+
+    const { password } = await NewPasswordSchema.parseAsync(data);
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    await prisma.user.update({
+      where: { id: existingUser.id },
+      data: { password: hashedPassword },
+    });
+
+    await prisma.passwordResetToken.delete({
+      where: { id: existingToken.id },
+    });
+
+    return {
+      success: true,
+      message: "Password has been changed!",
+    };
+  } catch (error) {
+    console.error("Error changing password", error);
     return {
       success: false,
       message: "Something went wrong. Please try again later.",
