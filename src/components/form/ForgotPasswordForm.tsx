@@ -49,7 +49,9 @@ const ForgotPasswordForm = () => {
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-neutral-700">Email address</FormLabel>
+              <FormLabel className="text-neutral-700 dark:text-gray-400">
+                Email address
+              </FormLabel>
               <div className="relative mb-4">
                 <FormControl>
                   <Input
@@ -70,15 +72,17 @@ const ForgotPasswordForm = () => {
         />
 
         {successMessage && (
-          <div className="bg-green-100 py-2 rounded-md text-center mt-4">
-            <p className="text-sm text-green-500 font-medium">
+          <div className="bg-green-100 dark:bg-green-950/30 py-2 rounded-md text-center mt-4">
+            <p className="text-sm text-green-500 dark:text-green-400 font-medium">
               {successMessage}
             </p>
           </div>
         )}
         {globalError && (
-          <div className="bg-red-100 py-2 rounded-md text-center mt-4">
-            <p className="text-sm text-red-500 font-medium">{globalError}</p>
+          <div className="bg-red-100 dark:bg-red-950/20 py-2 rounded-md text-center mt-4">
+            <p className="text-sm text-red-500 dark:text-red-400 font-medium">
+              {globalError}
+            </p>
           </div>
         )}
 

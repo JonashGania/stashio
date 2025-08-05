@@ -52,13 +52,13 @@ const ResetPasswordForm = () => {
   if (successMessage) {
     return (
       <div className="flex justify-center items-center flex-col text-center pt-6">
-        <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
+        <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-green-100 ">
           <CheckCircle className="h-6 w-6 text-green-600" />
         </div>
-        <h1 className="text-xl font-semibold text-gray-800 mb-2">
+        <h1 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-2">
           {successMessage}
         </h1>
-        <p className="text-gray-600">
+        <p className="text-gray-600 dark:text-gray-400">
           Your password has been successfully updated. You can now sign in with
           your new password.
         </p>
@@ -74,7 +74,9 @@ const ResetPasswordForm = () => {
           name="password"
           render={({ field }) => (
             <FormItem className="space-y-1 mb-4">
-              <FormLabel className="text-neutral-700">Password</FormLabel>
+              <FormLabel className="text-neutral-700 dark:text-gray-400">
+                Password
+              </FormLabel>
               <div className="relative mb-4">
                 <FormControl>
                   <Input
@@ -107,7 +109,7 @@ const ResetPasswordForm = () => {
           name="confirmPassword"
           render={({ field }) => (
             <FormItem className="space-y-1">
-              <FormLabel className="text-neutral-700">
+              <FormLabel className="text-neutral-700 dark:text-gray-400">
                 Confirm Password
               </FormLabel>
               <div className="relative mb-4">
@@ -140,16 +142,18 @@ const ResetPasswordForm = () => {
         />
 
         {!token && (
-          <div className="bg-red-100/60 py-2 rounded-md text-center mt-4 px-4">
-            <p className="text-sm text-red-500 font-medium">
+          <div className="bg-red-100/60 dark:bg-red-950/20 py-2 rounded-md text-center mt-4 px-4">
+            <p className="text-sm text-red-500 dark:text-red-400 font-medium">
               Missing reset token. Please request a new password reset
             </p>
           </div>
         )}
 
         {globalError && (
-          <div className="bg-red-100 py-2 rounded-md text-center mt-4">
-            <p className="text-sm text-red-500 font-medium">{globalError}</p>
+          <div className="bg-red-100/60 dark:bg-red-950/20 py-2 rounded-md text-center mt-4">
+            <p className="text-sm text-red-500 dark:text-red-400 font-medium">
+              {globalError}
+            </p>
           </div>
         )}
 

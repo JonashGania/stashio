@@ -60,7 +60,9 @@ const SignInForm = () => {
             name="email"
             render={({ field }) => (
               <FormItem className="space-y-1 mb-4">
-                <FormLabel className="text-neutral-700">Email</FormLabel>
+                <FormLabel className="text-neutral-700 dark:text-gray-400">
+                  Email
+                </FormLabel>
                 <FormControl>
                   <Input
                     type="email"
@@ -80,10 +82,12 @@ const SignInForm = () => {
             render={({ field }) => (
               <FormItem className="space-y-1 mb-6">
                 <div className="flex items-center justify-between">
-                  <FormLabel className="text-neutral-700">Password</FormLabel>
+                  <FormLabel className="text-neutral-700 dark:text-gray-400">
+                    Password
+                  </FormLabel>
                   <Link
                     href="/forgot-password"
-                    className="text-gray-500 hover:text-neutral-700 text-sm"
+                    className="text-gray-500 hover:text-neutral-700 hover:dark:text-gray-400 text-sm"
                   >
                     Forgot Password?
                   </Link>

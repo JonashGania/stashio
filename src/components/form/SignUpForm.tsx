@@ -60,7 +60,9 @@ const SignUpForm = () => {
             name="name"
             render={({ field }) => (
               <FormItem className="space-y-1 mb-4">
-                <FormLabel className="text-neutral-700">Name</FormLabel>
+                <FormLabel className="text-neutral-700 dark:text-gray-400">
+                  Name
+                </FormLabel>
                 <FormControl>
                   <Input
                     type="text"
@@ -80,7 +82,9 @@ const SignUpForm = () => {
             name="email"
             render={({ field }) => (
               <FormItem className="space-y-1 mb-4">
-                <FormLabel className="text-neutral-700">Email</FormLabel>
+                <FormLabel className="text-neutral-700 dark:text-gray-400">
+                  Email
+                </FormLabel>
                 <FormControl>
                   <Input
                     type="email"
@@ -99,7 +103,9 @@ const SignUpForm = () => {
             name="password"
             render={({ field }) => (
               <FormItem className="space-y-1 mb-6">
-                <FormLabel className="text-neutral-700">Password</FormLabel>
+                <FormLabel className="text-neutral-700 dark:text-gray-400">
+                  Password
+                </FormLabel>
                 <div className="relative">
                   <FormControl>
                     <Input
