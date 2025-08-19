@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import { getCategories, formatFileSize } from "@/lib/utils";
 import { CategoryStats } from "@/types";
 
@@ -24,34 +23,37 @@ const CategoryCards = ({ fileStats }: { fileStats: CategoryStats[] }) => {
   });
 
   return (
-    <div className="pt-4 flex categories-grid">
+    <div className="pt-4 grid grid-cols-2 min-[900px]:grid-cols-3 gap-4">
       {updatedCategories.map((category) => (
         <Link
           key={category.title}
           href={category.url}
-          className="px-3 py-3 w-full h-[130px] rounded-xl hover:scale-110 transition-all duration-300"
-          style={{ backgroundColor: category.bgColor }}
+          className="group relative overflow-hidden rounded-2xl p-6 cursor-pointer transform transition-all duration-500 hover:shadow-2xl hover:shadow-purple-500/25"
+          style={{ background: category.bgColor }}
         >
-          <div className="w-[35px] h-[35px] bg-white rounded-full grid place-items-center">
-            <Image
-              src={category.logo}
-              alt={`${category.title.toLowerCase()} logo`}
-              height={23}
-              width={23}
-            />
-          </div>
+          <div className="absolute top-0 right-0 w-20 h-20 bg-white/10 rounded-full -translate-y-10 translate-x-10 transition-transform duration-500 group-hover:scale-150"></div>
+          <div className="absolute bottom-0 left-0 w-16 h-16 bg-white/5 rounded-full translate-y-8 -translate-x-8 transition-transform duration-500 group-hover:scale-125"></div>
 
-          <div className="pt-5">
-            <span className="text-white font-medium">{category.title}</span>
-            <div>
-              <span className="text-white text-sm">
-                {category.totalFiles} files,{" "}
-              </span>
-              <span className="text-white text-sm">
-                {formatFileSize(category.size)}
+          <div className="relative z-10">
+            <div className="flex items-center justify-between">
+              <div className="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-sm flex justify-center items-center">
+                {category.logo}
+              </div>
+              <span className="text-white/80 text-sm font-medium">
+                {category.totalFiles} Files
               </span>
             </div>
+
+            <h3 className="text-white font-semibold text-lg mt-4 mb-2 group-hover:text-white transition-colors duration-300">
+              {category.title}
+            </h3>
+
+            <div className="text-white/90 text-sm font-medium">
+              {formatFileSize(category.size)}
+            </div>
           </div>
+
+          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
         </Link>
       ))}
     </div>
