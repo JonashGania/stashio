@@ -30,10 +30,10 @@ const RecentUploads = ({ recentUploads }: { recentUploads: Files[] }) => {
                     />
                   </div>
                   <div className="flex-1 flex flex-col ">
-                    <p className="text-zinc-700 dark:text-gray-200 font-medium recent-file-name">
+                    <p className="text-gray-900 dark:text-white font-medium recent-file-name group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors duration-300">
                       {file.name}
                     </p>
-                    <span className="text-sm text-zinc-400 dark:text-zinc-300">
+                    <span className="text-gray-500 dark:text-gray-400 text-sm">
                       {formatDateWithTime(file.createdAt.toString())}
                     </span>
                   </div>
