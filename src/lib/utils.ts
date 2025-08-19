@@ -14,26 +14,38 @@ export const getCategories = () => {
     {
       title: "Documents",
       url: "/documents",
-      bgColor: "#8F60FF",
-      logo: "/assets/colored-document.svg",
+      bgColor: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+      logo: "📄",
     },
     {
       title: "Images",
       url: "/images",
-      bgColor: "#019BA0",
-      logo: "/assets/colored-images.svg",
+      bgColor: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
+      logo: "🖼️",
     },
     {
-      title: "Media",
+      title: "Videos",
       url: "/media",
-      bgColor: "#FF7BAC",
-      logo: "/assets/colored-media.svg",
+      bgColor: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)",
+      logo: "🎥",
+    },
+    {
+      title: "Audio",
+      url: "/others",
+      bgColor: "linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)",
+      logo: "🎵",
+    },
+    {
+      title: "Archives",
+      url: "/others",
+      bgColor: "linear-gradient(135deg, #fa709a 0%, #fee140 100%)",
+      logo: "📦",
     },
     {
       title: "Others",
       url: "/others",
-      bgColor: "#4E65FB",
-      logo: "/assets/colored-others.svg",
+      bgColor: "linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)",
+      logo: "📁",
     },
   ];
 };
