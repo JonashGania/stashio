@@ -128,7 +128,7 @@
 }
 
 .recent-file-name {
-  @apply truncate max-w-[400px];
+  @apply truncate max-w-[500px];
 }
 
 @media (max-width: 1240px) {
