@@ -24,9 +24,9 @@ const DropdownAction = ({ layout, files, userId }: DropdownActionProps) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button>
+        <button className=" dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-200 w-7 h-7 rounded-md flex justify-center items-center">
           {layout === "table" ? (
-            <Ellipsis size={15} className="text-zinc-600 dark:text-zinc-300" />
+            <Ellipsis size={15} className="text-gray-700 dark:text-zinc-300 " />
           ) : (
             <EllipsisVertical
               size={20}
