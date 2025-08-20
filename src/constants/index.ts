@@ -1,27 +1,41 @@
+import {
+  LayoutDashboard,
+  FileText,
+  Image,
+  Video,
+  Music,
+  Files,
+} from "lucide-react";
+
 export const navItems = [
   {
     name: "Dashboard",
-    icon: "/assets/dashboard.svg",
+    icon: LayoutDashboard,
     url: "/",
   },
   {
     name: "Documents",
-    icon: "/assets/document.svg",
+    icon: FileText,
     url: "/documents",
   },
   {
     name: "Images",
-    icon: "/assets/images.svg",
+    icon: Image,
     url: "/images",
   },
   {
-    name: "Media",
-    icon: "/assets/media.svg",
-    url: "/media",
+    name: "Videos",
+    icon: Video,
+    url: "/videos",
+  },
+  {
+    name: "Audio",
+    icon: Music,
+    url: "/audio",
   },
   {
     name: "Others",
-    icon: "/assets/others.svg",
+    icon: Files,
     url: "/others",
   },
 ];
