@@ -72,6 +72,7 @@ model PasswordResetToken {
 enum FileType {
     DOCUMENT
     IMAGE
-    MEDIA
+    VIDEO
+    AUDIO
     OTHER
 }
