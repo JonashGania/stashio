@@ -33,7 +33,7 @@ const DetailsDialog = ({ file }: { file: Files }) => {
         </DialogHeader>
         <DialogDescription></DialogDescription>
         <div className="pt-1">
-          <div className="relative w-full h-[180px] phone:h-[200px]">
+          <div className="relative w-full h-[180px] phone:h-[250px]">
             <Image
               src={isImage ? file.fileUrl : getFileIcon(type, extension)}
               alt={`${file.name} image`}
