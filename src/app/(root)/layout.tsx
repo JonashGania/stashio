@@ -14,7 +14,7 @@ const Layout = async ({ children }: { children: ReactNode }) => {
 
   return (
     <main className={`flex min-h-screen w-full bg-indigo-50 dark:bg-gray-950`}>
-      <Sidebars />
+      <Sidebars user={user} />
 
       <section className="flex flex-col h-full w-full flex-1 md:pr-4 lg:pl-4">
         <Header user={user} />
