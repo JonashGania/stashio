@@ -42,11 +42,11 @@ const Searchbar = ({ userId }: { userId: string | undefined }) => {
     <>
       <Dialog>
         <DialogTrigger asChild>
-          <button className="block phone:hidden">
+          <button className="block min-[650px]:hidden">
             <Search color="rgba(113,113,122)" size={25} />
           </button>
         </DialogTrigger>
-        <DialogContent className="max-w-[340px] px-3 pb-0">
+        <DialogContent className="max-w-[400px] px-3 pb-0">
           <DialogHeader className="border-b border-b-zinc-200 dark:border-b-zinc-600 py-1">
             <DialogTitle className="flex items-center gap-2">
               <Search
@@ -84,10 +84,10 @@ const Searchbar = ({ userId }: { userId: string | undefined }) => {
         </DialogContent>
       </Dialog>
 
-      <div className="max-w-[480px] w-full relative hidden phone:block">
+      <div className="max-w-[480px] w-full relative hidden min-[650px]:block">
         <div
           ref={searchRef}
-          className="w-full flex items-center gap-2 px-3 py-3 rounded-3xl border border-transparent dark:focus-within:border-gray-600 focus-within:border-blue-400 bg-[rgba(207,250,254,0.5)] dark:bg-zinc-800 overflow-hidden"
+          className="w-full flex items-center gap-2 px-3 py-3 rounded-3xl border border-transparent dark:focus-within:border-gray-600 focus-within:border-blue-400 bg-[rgba(207,250,254,0.5)] dark:bg-slate-900 overflow-hidden"
         >
           <Search
             size={20}
