@@ -23,8 +23,8 @@ export const columns: ColumnDef<Files>[] = [
           <Image
             src={getFileIcon(type, extension)}
             alt="thumbnail"
-            width={20}
-            height={20}
+            width={30}
+            height={30}
           />
           <span className="text-zinc-800 dark:text-gray-200 max-w-[180px] sm:max-w-[300] truncate">
             {row.getValue("name")}
