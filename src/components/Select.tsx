@@ -1,6 +1,5 @@
 "use client";
 
-import { Label } from "./ui/label";
 import {
   Select,
   SelectTrigger,
@@ -17,17 +16,14 @@ interface SelectComponentProps {
 const SelectComponent = ({ sort, setSort }: SelectComponentProps) => {
   return (
     <div className="flex gap-2 items-center">
-      <Label htmlFor="sort-type" className="hidden phone:block">
-        Sort by:
-      </Label>
-      <Label htmlFor="sort-type" className="block phone:hidden">
-        Sort:
-      </Label>
       <Select value={sort} onValueChange={setSort}>
-        <SelectTrigger id="sort-type" className="w-[140px] sm:w-[180px]">
+        <SelectTrigger
+          id="sort-type"
+          className="w-[140px] sm:w-[180px] text-gray-700 dark:text-gray-300 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border border-white/20 dark:border-gray-700/50"
+        >
           <SelectValue />
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent className="bg-white dark:bg-gray-800/50  text-gray-700 dark:text-gray-300">
           <SelectItem
             value="date-newest"
             className="focus:bg-zinc-300 dark:focus:bg-zinc-800"
@@ -44,25 +40,25 @@ const SelectComponent = ({ sort, setSort }: SelectComponentProps) => {
             value="name-asc"
             className="focus:bg-zinc-300 dark:focus:bg-zinc-800"
           >
-            Name (Ascending)
+            Name (A-Z)
           </SelectItem>
           <SelectItem
             value="name-desc"
             className="focus:bg-zinc-300 dark:focus:bg-zinc-800"
           >
-            Name (Descending)
+            Name (Z-A)
           </SelectItem>
           <SelectItem
             value="size-highest"
             className="focus:bg-zinc-300 dark:focus:bg-zinc-800"
           >
-            Size (Highest)
+            Size (Largest)
           </SelectItem>
           <SelectItem
             value="size-lowest"
             className="focus:bg-zinc-300 dark:focus:bg-zinc-800"
           >
-            Size (Lowest)
+            Size (Smallest)
           </SelectItem>
         </SelectContent>
       </Select>
