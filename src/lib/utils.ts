@@ -25,21 +25,15 @@ export const getCategories = () => {
     },
     {
       title: "Videos",
-      url: "/media",
+      url: "/videos",
       bgColor: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)",
       logo: "🎥",
     },
     {
       title: "Audio",
-      url: "/others",
+      url: "/audio",
       bgColor: "linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)",
       logo: "🎵",
-    },
-    {
-      title: "Archives",
-      url: "/others",
-      bgColor: "linear-gradient(135deg, #fa709a 0%, #fee140 100%)",
-      logo: "📦",
     },
     {
       title: "Others",
@@ -70,35 +64,44 @@ export const getFileType = (filename: string) => {
     "ods",
   ];
   const imageExtensions = ["png", "jpg", "jpeg", "gif", "bmp", "svg", "webp"];
-  const mediaExtensions = [
+  const videoExtenstions = [
     "mp4",
     "webm",
     "mov",
     "avi",
     "mkv",
-    "mp3",
-    "wav",
     "wmv",
     "flv",
     "ogg",
-    "aac",
   ];
+  const audioExtensions = ["mp3", "wav", "aac"];
 
   let type: FileType = FileType.OTHER;
   if (documentExtensions.includes(extension)) {
     type = FileType.DOCUMENT;
   } else if (imageExtensions.includes(extension)) {
     type = FileType.IMAGE;
-  } else if (mediaExtensions.includes(extension)) {
-    type = FileType.MEDIA;
+  } else if (videoExtenstions.includes(extension)) {
+    type = FileType.VIDEO;
+  } else if (audioExtensions.includes(extension)) {
+    type = FileType.AUDIO;
   }
 
   return { type, extension };
 };
 
 export const getFileIcon = (type: FileType, extension: string) => {
-  const audioExtensions = ["mp3", "wav", "ogg", "aac"];
-  const videoExtensions = ["mp4", "webm", "mov", "avi", "mkv", "wmv", "flv"];
+  const audioExtensions = ["mp3", "wav", "aac"];
+  const videoExtensions = [
+    "mp4",
+    "webm",
+    "mov",
+    "avi",
+    "mkv",
+    "wmv",
+    "flv",
+    "ogg",
+  ];
 
   const iconMap: Record<string, string> = {
     doc: "/assets/file-icons/doc.svg",
@@ -133,8 +136,10 @@ export const getFileIcon = (type: FileType, extension: string) => {
       return iconMap.fileDocument;
     case FileType.IMAGE:
       return iconMap.fileImage;
-    case FileType.MEDIA:
+    case FileType.VIDEO:
       return iconMap.fileVideo;
+    case FileType.AUDIO:
+      return iconMap.fileAudio;
     default:
       return iconMap.fileOther;
   }
@@ -164,11 +169,11 @@ export const formatFileSize = (bytes: number) => {
   if (bytes < 1024) {
     return `${bytes} B`;
   } else if (bytes < 1024 * 1024) {
-    return `${(bytes / 1024).toFixed(1)} KB`;
+    return `${(bytes / 1024).toFixed(2)} KB`;
   } else if (bytes < 1024 * 1024 * 1024) {
-    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+    return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
   } else {
-    return `${(bytes / (1024 * 1024 * 1024)).toFixed(1)} GB`;
+    return `${(bytes / (1024 * 1024 * 1024)).toFixed(2)} GB`;
   }
 };
 
