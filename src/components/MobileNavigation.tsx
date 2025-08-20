@@ -9,15 +9,13 @@ import {
   SheetTitle,
   SheetDescription,
 } from "./ui/sheet";
-import { Separator } from "./ui/separator";
 import { Menu } from "lucide-react";
 import { User } from "next-auth";
 import { navItems } from "@/constants";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import UploadButton from "./buttons/UploadButton";
-import StorageChart from "./StorageChart";
+import StorageBar from "./StorageBar";
 import SignOutButton from "./buttons/SignOutButton";
 import { StorageInfo } from "@/types";
 import { useState } from "react";
@@ -31,15 +29,14 @@ const MobileNavigation = ({ user, storageInfo }: MobileNavigationProps) => {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
 
+  const usedPercentage =
+    (Number(storageInfo?.usedSpace) / Number(storageInfo?.totalSpace)) * 100;
+
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
         <button onClick={() => setOpen(true)}>
-          <Menu
-            size={40}
-            className="text-zinc-700 dark:text-zinc-300"
-            strokeWidth={2}
-          />
+          <Menu size={35} className="text-purple-600" strokeWidth={2} />
         </button>
       </SheetTrigger>
       <SheetContent className="w-[65%] sm:w-[50%] px-3 flex flex-col h-full gap-0">
@@ -73,53 +70,49 @@ const MobileNavigation = ({ user, storageInfo }: MobileNavigationProps) => {
           </SheetTitle>
         </SheetHeader>
         <SheetDescription></SheetDescription>
-        <nav className="pt-4">
-          <ul className="flex items-center flex-col">
-            {navItems.map((item) => (
-              <Link
-                key={item.name}
-                href={item.url}
-                className={`w-full`}
-                onClick={() => setOpen(false)}
-              >
-                <div
-                  className={`flex items-center gap-2 px-4 py-3 rounded-[30px] ${
-                    pathname === item.url
-                      ? "bg-violet-500 hover:bg-violet-500"
-                      : "bg-white dark:bg-gray-950 hover:bg-violet-100"
+        <nav className="py-4 ">
+          <ul className="space-y-2">
+            {navItems.map((item, index) => {
+              const isActive = item.url === pathname;
+              const Icon = item.icon;
+
+              return (
+                <Link
+                  key={index}
+                  prefetch={true}
+                  href={item.url}
+                  className={`group flex w-full items-center gap-3 px-[14px] py-3 rounded-xl transition-all duration-300 transform hover:scale-105 ${
+                    isActive
+                      ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg shadow-purple-500/25"
+                      : "hover:bg-gray-100 dark:hover:bg-gray-800/50 text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400"
                   }`}
                 >
-                  <Image
-                    src={item.icon}
-                    alt={`${item.name} icon`}
-                    height={25}
-                    width={25}
-                    className={`transition-all
-                    ${pathname === item.url ? "nav-icon-active" : "nav-icon"}
-                  `}
+                  <Icon
+                    size={20}
+                    className={`dark:text-white flex-shrink-0 ${isActive ? "text-gray-white" : "text-gray-700"}`}
                   />
-                  <span
-                    className={`font-medium text-lg ${
-                      pathname === item.url
-                        ? "text-white"
-                        : "text-zinc-700 dark:text-gray-200"
-                    }`}
-                  >
-                    {item.name}
-                  </span>
-                </div>
-              </Link>
-            ))}
+                  <div className={`flex-1 overflow-hidden`}>
+                    <span
+                      className={`font-medium ${isActive ? "text-white" : ""}`}
+                    >
+                      {item.name}
+                    </span>
+                  </div>
+
+                  {isActive && (
+                    <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
+                  )}
+                </Link>
+              );
+            })}
           </ul>
         </nav>
 
-        <div className="pt-2">
-          <UploadButton userId={user?.id} />
-        </div>
-        <Separator className="my-4" />
-        <StorageChart storageInfo={storageInfo} />
-
-        <SheetFooter className="mt-auto">
+        <SheetFooter className="mt-auto flex-col">
+          <StorageBar
+            usedPercentage={usedPercentage}
+            usedSpace={storageInfo?.usedSpace}
+          />
           <SignOutButton position="mobile-nav" />
         </SheetFooter>
       </SheetContent>
