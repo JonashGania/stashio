@@ -107,20 +107,22 @@ const FilesWrapper = ({
   return (
     <Tabs defaultValue="grid">
       <div className="pt-4 flex justify-between gap-4 items-center">
-        <TabsList className="dark:bg-gray-950">
+        <TabsList className="bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm h-12">
           <TabsTrigger
             value="grid"
-            className="flex items-center gap-1 px-0 transition-none"
+            className="flex items-center gap-2 px-3 py-2 rounded-lg transition-none 
+               data-[state=active]:bg-gradient-to-br data-[state=active]:from-purple-500 data-[state=active]:to-pink-500 data-[state=active]:shadow-lg text-gray-600 dark:text-gray-400 data-[state=active]:text-white data-[state=active]:dark:text-white"
           >
-            <Grid3X3 />
-            Grid
+            <Grid3X3 size={18} />
+            <span className="font-medium text-base">Grid</span>
           </TabsTrigger>
           <TabsTrigger
             value="table"
-            className="flex items-center gap-1 ml-4 px-0 transition-none"
+            className="flex items-center gap-2 px-3 py-2 rounded-lg transition-none 
+               data-[state=active]:bg-gradient-to-br data-[state=active]:from-purple-500 data-[state=active]:to-pink-500 data-[state=active]:shadow-lg text-gray-600 dark:text-gray-400 data-[state=active]:text-white data-[state=active]:dark:text-white"
           >
-            <Rows2 />
-            Table
+            <Rows2 size={18} />
+            <span className="font-medium text-base">Table</span>
           </TabsTrigger>
         </TabsList>
 
