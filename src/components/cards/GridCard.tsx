@@ -70,11 +70,11 @@ const GridCard = ({ files }: { files: Files[] }) => {
                     height={20}
                     width={20}
                   />
-                  <span className="text-sm text-zinc-700 dark:text-gray-200 file-name font-medium">
+                  <span className="text-sm text-zinc-700 file-name font-medium">
                     {file.name}
                   </span>
                 </div>
-                <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400 pt-1">
+                <div className="flex items-center justify-between text-sm text-gray-500 pt-1">
                   <span>{formatFileSize(Number(file.size))}</span>
                   <span>{formatDate(file.createdAt.toString())}</span>
                 </div>
