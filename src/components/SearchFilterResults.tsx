@@ -41,10 +41,10 @@ const SearchFilterResults = ({
         return (
           <li
             key={result.id}
-            className="flex cursor-default items-center gap-2 px-3 py-2 hover:bg-zinc-200 dark:hover:bg-zinc-800 rounded-sm"
+            className="group flex items-center gap-3 p-3 rounded-xl hover:bg-white/10 dark:hover:bg-gray-800/50 cursor-pointer transition-all duration-200 border border-transparent hover:border-purple-200/50 dark:hover:border-purple-800/50 "
             onClick={() => navigateToFile(result.category)}
           >
-            <div className="h-[30px] w-[30px] relative">
+            <div className="h-[40px] w-[40px] relative">
               <Image
                 src={isImage ? result.fileUrl : getFileIcon(type, extension)}
                 alt="thumbnail"
@@ -53,9 +53,14 @@ const SearchFilterResults = ({
                 className="rounded-md object-cover"
               />
             </div>
-            <span className="text-zinc-700 dark:text-gray-200 text-sm max-w-[250px] truncate">
-              {result.name}
-            </span>
+            <div className="flex flex-col">
+              <span className="text-zinc-700 dark:text-white text-sm max-w-[250px] truncate group-hover:text-purple-500">
+                {result.name}
+              </span>
+              <span className="text-sm text-gray-400">
+                {type.toLowerCase()} file
+              </span>
+            </div>
           </li>
         );
       })}
