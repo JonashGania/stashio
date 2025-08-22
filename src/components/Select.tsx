@@ -23,40 +23,40 @@ const SelectComponent = ({ sort, setSort }: SelectComponentProps) => {
         >
           <SelectValue />
         </SelectTrigger>
-        <SelectContent className="bg-white dark:bg-gray-800/50  text-gray-700 dark:text-gray-300">
+        <SelectContent className="bg-white dark:bg-gray-900  text-gray-700 dark:text-gray-300">
           <SelectItem
             value="date-newest"
-            className="focus:bg-zinc-300 dark:focus:bg-zinc-800"
+            className="focus:bg-zinc-300 dark:focus:bg-gray-800"
           >
             Date (Newest)
           </SelectItem>
           <SelectItem
             value="date-oldest"
-            className="focus:bg-zinc-300 dark:focus:bg-zinc-800"
+            className="focus:bg-zinc-300 dark:focus:bg-gray-800"
           >
             Date (Oldest)
           </SelectItem>
           <SelectItem
             value="name-asc"
-            className="focus:bg-zinc-300 dark:focus:bg-zinc-800"
+            className="focus:bg-zinc-300 dark:focus:bg-gray-800"
           >
             Name (A-Z)
           </SelectItem>
           <SelectItem
             value="name-desc"
-            className="focus:bg-zinc-300 dark:focus:bg-zinc-800"
+            className="focus:bg-zinc-300 dark:focus:bg-gray-800"
           >
             Name (Z-A)
           </SelectItem>
           <SelectItem
             value="size-highest"
-            className="focus:bg-zinc-300 dark:focus:bg-zinc-800"
+            className="focus:bg-zinc-300 dark:focus:bg-gray-800"
           >
             Size (Largest)
           </SelectItem>
           <SelectItem
             value="size-lowest"
-            className="focus:bg-zinc-300 dark:focus:bg-zinc-800"
+            className="focus:bg-zinc-300 dark:focus:bg-gray-800"
           >
             Size (Smallest)
           </SelectItem>
