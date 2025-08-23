@@ -17,7 +17,7 @@ const SignOutButton = ({ position }: { position: string }) => {
             position === "mobile-nav" ? "text-base" : "text-sm"
           }`}
         >
-          Log out
+          Sign out
         </span>
       </button>
     </form>
