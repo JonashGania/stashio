@@ -91,11 +91,13 @@ const RenameDialog = ({ file, userId }: RenameDialogProps) => {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <button
-          className="flex items-center gap-[6px] w-full"
+          className="flex items-center gap-4 w-full  px-2 "
           onClick={() => setOpen(true)}
         >
-          <PencilLine size={16} />
-          <span className="text-zinc-600 dark:text-gray-200">Rename</span>
+          <PencilLine size={20} className="text-black dark:text-gray-200" />
+          <span className="text-black font-semibold dark:text-gray-200">
+            Rename
+          </span>
         </button>
       </DialogTrigger>
       <DialogContent className="max-w-[340px] phone:max-w-sm">
