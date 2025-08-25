@@ -46,7 +46,7 @@ const GridCard = ({ files }: { files: Files[] }) => {
             return (
               <div
                 key={file.id}
-                className="flex flex-col gap-2 relative group p-3 bg-white rounded-lg"
+                className="flex flex-col gap-2 relative group p-3  rounded-lg"
               >
                 <Link
                   href={file.fileUrl}
@@ -70,21 +70,22 @@ const GridCard = ({ files }: { files: Files[] }) => {
                     height={20}
                     width={20}
                   />
-                  <span className="text-sm text-zinc-700 file-name font-medium">
+                  <span className="text-sm text-zinc-700 dark:text-white file-name font-medium">
                     {file.name}
                   </span>
                 </div>
-                <div className="flex items-center justify-between text-sm text-gray-500 pt-1">
+                <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400 pt-1">
                   <span>{formatFileSize(Number(file.size))}</span>
                   <span>{formatDate(file.createdAt.toString())}</span>
                 </div>
 
-                <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <div className=" bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-sm shadow-lg hover:scale-110 transition-transform duration-200">
+                <div className="absolute top-2 right-2 transition-opacity duration-300">
+                  <div className=" rounded-sm shadow-lg hover:scale-110 transition-transform duration-200">
                     <DropdownAction
                       layout="grid"
                       files={file}
                       userId={file.userId}
+                      className="bg-white dark:bg-white"
                     />
                   </div>
                 </div>
