@@ -74,20 +74,22 @@ const DeleteDialog = ({ file, userId }: DeleteDialogProps) => {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <button
-          className="flex items-center gap-[6px] w-full"
+          className="flex items-center gap-4 w-full px-2"
           onClick={() => setOpen(true)}
         >
-          <Trash2 size={16} />
-          <span className="text-zinc-600 dark:text-gray-200">Delete</span>
+          <Trash2 size={20} className="text-black dark:text-gray-200" />
+          <span className="text-black font-semibold dark:text-gray-200">
+            Delete
+          </span>
         </button>
       </DialogTrigger>
-      <DialogContent className="max-w-[340px] phone:max-w-sm">
+      <DialogContent className="max-w-[340px] phone:max-w-sm py-4 px-6">
         <DialogHeader>
-          <DialogTitle className="font-normal text-2xl text-red-500">
+          <DialogTitle className="font-semibold text-xl text-red-500">
             Delete
           </DialogTitle>
         </DialogHeader>
-        <DialogDescription>
+        <DialogDescription className="text-black dark:text-gray-200">
           Are you sure you want to delete this file? This action cannot be
           undone.
         </DialogDescription>
