@@ -4,7 +4,7 @@ import { googleSignIn } from "@/actions/auth";
 const GoogleSignIn = () => {
   return (
     <form action={googleSignIn}>
-      <button className="py-2 px-4 w-full border border-zinc-300 rounded-md hover:bg-gray-200 bg-transparent dark:bg-gray-200 flex gap-4 items-center justify-center">
+      <button className="py-2 px-4 w-full border border-zinc-300 rounded-md hover:bg-gray-200 bg-transparent dark:bg-gray-200 opacity-80 hover:opacity-100 flex gap-4 items-center justify-center transition-opacity duration-200 ease-in">
         <Image
           src="/assets/google.svg"
           alt="google icon"
