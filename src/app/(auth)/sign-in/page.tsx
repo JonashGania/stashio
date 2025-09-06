@@ -12,7 +12,7 @@ import GoogleSignIn from "@/components/GoogleSignIn";
 const SignIn = () => {
   return (
     <div className="w-full h-screen flex justify-center items-center px-4">
-      <Card className="w-[470px] py-8 shadow-xl border-gray-100 dark:border-neutral-800 rounded-2xl">
+      <Card className="w-[470px] py-8 shadow-xl dark:shadow-none border-gray-100 dark:border-neutral-800 rounded-2xl">
         <CardHeader className="text-center pt-0 pb-8">
           <CardTitle className="text-2xl">Welcome back</CardTitle>
           <CardDescription>Sign in to your account</CardDescription>
