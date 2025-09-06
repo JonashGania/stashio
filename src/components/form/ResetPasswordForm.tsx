@@ -159,7 +159,7 @@ const ResetPasswordForm = () => {
 
         <Button
           type="submit"
-          className="w-full bg-violet-500 hover:bg-violet-600 h-11 rounded-xl text-white mt-4"
+          className="w-full bg-gradient-to-br from-purple-500 to-pink-500 opacity-80 hover:opacity-100 transition-opacity duration-200 ease-in h-11 rounded-xl text-white mt-4"
           disabled={form.formState.isSubmitting || !token}
         >
           {form.formState.isSubmitting ? (
