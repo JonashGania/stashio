@@ -121,7 +121,7 @@ const SignInForm = () => {
           />
           <Button
             type="submit"
-            className="w-full bg-violet-500 hover:bg-violet-600 h-11 rounded-xl"
+            className="w-full bg-gradient-to-br from-purple-500 to-pink-500 opacity-80 hover:opacity-100 transition-opacity duration-200 ease-in h-11 rounded-xl"
             disabled={form.formState.isSubmitting}
           >
             {form.formState.isSubmitting ? (
