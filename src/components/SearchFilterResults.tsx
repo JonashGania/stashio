@@ -75,7 +75,7 @@ const SearchFilterResults = ({
                 alt="thumbnail"
                 fill
                 sizes="w-full"
-                className="rounded-md object-cover"
+                className="rounded-md object-contain"
               />
             </div>
             <div className="flex flex-col">
