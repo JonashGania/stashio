@@ -104,19 +104,21 @@ export const getFileIcon = (type: FileType, extension: string) => {
   ];
 
   const iconMap: Record<string, string> = {
-    doc: "/assets/file-icons/doc.svg",
-    docx: "/assets/file-icons/docx.svg",
-    ppt: "/assets/file-icons/ppt.svg",
-    pptx: "/assets/file-icons/ppt.svg",
-    pdf: "/assets/file-icons/pdf.svg",
-    txt: "/assets/file-icons/txt.svg",
-    xls: "/assets/file-icons/excel.svg",
-    xlsx: "/assets/file-icons/excel.svg",
-    fileDocument: "/assets/file-icons/file-document.svg",
-    fileImage: "/assets/file-icons/file-image.svg",
-    fileVideo: "/assets/file-icons/file-video.svg",
-    fileAudio: "/assets/file-icons/file-audio.svg",
-    fileOther: "/assets/file-icons/file-other.svg",
+    doc: "/assets/file-icons/docx.png",
+    docx: "/assets/file-icons/docx.png",
+    ppt: "/assets/file-icons/ppt.png",
+    pptx: "/assets/file-icons/ppt.png",
+    pdf: "/assets/file-icons/pdf.png",
+    txt: "/assets/file-icons/txt.png",
+    xls: "/assets/file-icons/excel.png",
+    xlsx: "/assets/file-icons/excel.png",
+    zip: "/assets/file-icons/zip.png",
+    svg: "/assets/file-icons/svg.png",
+    fileDocument: "/assets/file-icons/docx.png",
+    fileImage: "/assets/file-icons/file-image.png",
+    fileVideo: "/assets/file-icons/file-video.png",
+    fileAudio: "/assets/file-icons/file-audio.png",
+    fileOther: "/assets/file-icons/file-other.png",
   };
 
   if (iconMap[extension]) {
