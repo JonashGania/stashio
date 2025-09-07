@@ -50,15 +50,17 @@ const GridCard = ({ files }: { files: Files[] }) => {
               >
                 <Link
                   href={file.fileUrl}
-                  className="relative w-full h-[170px] phone:h-[220px] rounded-md"
+                  className="relative w-full aspect-[4/3] rounded-md  flex items-center justify-center"
                   target="_blank"
                 >
                   <Image
                     src={isImage ? file.fileUrl : getFileIcon(type, extension)}
                     alt={`${file.name} image`}
                     fill
-                    sizes="w-full"
-                    className="rounded-sm object-cover"
+                    sizes="(max-width: 768px) 100vw, 25vw"
+                    className={`rounded-sm ${
+                      isImage ? "object-cover" : "object-contain p-6"
+                    }`}
                     loading={imageCount++ < 15 ? "eager" : "lazy"}
                     priority={files.indexOf(file) === 0}
                   />
