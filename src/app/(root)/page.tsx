@@ -11,10 +11,15 @@ import StorageChart from "@/components/StorageChart";
 import RecentUploads from "@/components/RecentUploads";
 import RecentUploadsSkeleton from "@/components/skeletons/RecentUploadsSkeleton";
 import StorageChartSkeleton from "@/components/skeletons/StorageChartSkeleton";
+import { redirect } from "next/navigation";
 
 const Dashboard = async () => {
   const session = await auth();
   const userId = session?.user?.id;
+
+  if (!session?.user) {
+    redirect("/login");
+  }
 
   const [categoryStats, recentUploads, storageInfo] = await Promise.all([
     getStatsByCategory(userId),

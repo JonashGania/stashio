@@ -1,4 +1,5 @@
 import { auth } from "@/auth";
+import { redirect } from "next/navigation";
 import FilesWrapper from "@/components/FilesWrapper";
 
 const validCategories = {
@@ -20,6 +21,10 @@ interface CategoryPageProps {
 const CategoryPage = async ({ params }: CategoryPageProps) => {
   const session = await auth();
   const userId = session?.user?.id;
+
+  if (!session?.user) {
+    redirect("/login");
+  }
 
   const { category } = await params;
   const categoryParam = category.toLowerCase() as CategoryParam;
