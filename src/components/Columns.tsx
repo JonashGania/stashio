@@ -26,7 +26,7 @@ export const columns: ColumnDef<Files>[] = [
             width={20}
             height={20}
           />
-          <span className="text-zinc-800 dark:text-gray-200 max-w-[180px] sm:max-w-[300] truncate font-semibold">
+          <span className="text-zinc-800 dark:text-gray-200 max-w-[180px] sm:max-w-[300] truncate font-semibold select-none">
             {row.getValue("name")}
           </span>
         </div>
