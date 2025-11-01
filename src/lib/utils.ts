@@ -112,6 +112,7 @@ export const getFileIcon = (type: FileType, extension: string) => {
     txt: "/assets/file-icons/txt.png",
     xls: "/assets/file-icons/excel.png",
     xlsx: "/assets/file-icons/excel.png",
+    csv: "/assets/file-icons/excel.png",
     zip: "/assets/file-icons/zip.png",
     svg: "/assets/file-icons/svg.png",
     fileDocument: "/assets/file-icons/docx.png",
