@@ -15,7 +15,7 @@ const StorageBar = ({
   return (
     <div
       className={clsx(
-        `mb-4 p-3 rounded-xl bg-gradient-to-r from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30 transition-all duration-300 overflow-hidden`,
+        `mb-4 p-3 rounded-xl bg-gradient-to-r from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30 transition-all duration-100 overflow-hidden`,
         className
       )}
     >
@@ -29,7 +29,7 @@ const StorageBar = ({
       </div>
       <div className="w-full h-2 bg-white/50 dark:bg-gray-700/50 rounded-full overflow-hidden">
         <div
-          className="h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full transition-all duration-1000 ease-out"
+          className="h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full transition-all duration-100 ease-out"
           style={{ width: `${usedPercentage}%` }}
         ></div>
       </div>
