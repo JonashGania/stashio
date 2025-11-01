@@ -38,7 +38,7 @@ const GridCard = ({ files }: { files: Files[] }) => {
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 min-[1500px]:grid-cols-5 gap-6">
           {files.map((file) => {
             const { type, extension } = getFileType(file.name);
             const isImage = type === "IMAGE" && extension !== "svg";
@@ -46,50 +46,68 @@ const GridCard = ({ files }: { files: Files[] }) => {
             return (
               <div
                 key={file.id}
-                className="flex flex-col gap-2 relative group p-3  rounded-lg"
+                className="group relative flex flex-col overflow-hidden rounded-2xl bg-white dark:bg-slate-800/50 border border-gray-200 dark:border-slate-700/50 hover:border-violet-300 dark:hover:border-violet-500/50 shadow-sm hover:shadow-xl hover:shadow-violet-500/10 transition-all duration-300 hover:-translate-y-1"
               >
+                {/* Image/Icon Container */}
                 <Link
                   href={file.fileUrl}
-                  className="relative w-full aspect-[4/3] rounded-md  flex items-center justify-center"
+                  className="relative w-full aspect-[4/3] bg-gradient-to-br from-gray-50 to-gray-100 dark:from-slate-900 dark:to-slate-800 overflow-hidden"
                   target="_blank"
                 >
                   <Image
                     src={isImage ? file.fileUrl : getFileIcon(type, extension)}
-                    alt={`${file.name} image`}
+                    alt={`${file.name} preview`}
                     fill
                     sizes="(max-width: 768px) 100vw, 25vw"
-                    className={`rounded-sm ${
-                      isImage ? "object-cover" : "object-contain p-6"
+                    className={`${
+                      isImage
+                        ? "object-cover group-hover:scale-105 transition-transform duration-500"
+                        : "object-contain p-8"
                     }`}
                     loading={imageCount++ < 15 ? "eager" : "lazy"}
                     priority={files.indexOf(file) === 0}
                   />
                 </Link>
-                <div className="flex items-center gap-2 flex-1 min-w-0">
-                  <Image
-                    src={getFileIcon(type, extension)}
-                    alt="thumbnail"
-                    height={20}
-                    width={20}
-                  />
-                  <span className="text-sm text-zinc-700 dark:text-white file-name font-medium">
-                    {file.name}
-                  </span>
-                </div>
-                <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400 pt-1">
-                  <span>{formatFileSize(Number(file.size))}</span>
-                  <span>{formatDate(file.createdAt.toString())}</span>
+
+                {/* File Info Container */}
+                <div className="flex flex-col gap-3 p-4">
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-semibold text-gray-900 dark:text-white truncate leading-tight">
+                      {file.name}
+                    </p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                      {extension.toUpperCase()}
+                    </p>
+                  </div>
+
+                  {/* File metadata */}
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="px-2 py-1 bg-gray-100 dark:bg-slate-700/50 rounded-md text-gray-600 dark:text-gray-300 font-medium">
+                      {formatFileSize(Number(file.size))}
+                    </span>
+                    <span className="text-gray-500 dark:text-gray-400">
+                      {formatDate(file.createdAt.toString())}
+                    </span>
+                  </div>
                 </div>
 
-                <div className="absolute top-2 right-2 transition-opacity duration-300">
-                  <div className=" rounded-sm shadow-lg hover:scale-110 transition-transform duration-200">
+                {/* Action Button - Top Right */}
+                <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-30">
+                  <div className="backdrop-blur-md bg-white/90 dark:bg-slate-900/90 rounded-lg shadow-lg hover:scale-110 transition-transform duration-200">
                     <DropdownAction
                       layout="grid"
                       files={file}
                       userId={file.userId}
-                      className="bg-white dark:bg-white"
+                      className=""
                     />
                   </div>
+                </div>
+
+                {/* Type Badge - Top Left */}
+                <div className="absolute top-3 left-3 z-20">
+                  <span className="px-2 py-1 bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white text-xs font-medium rounded-md shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    {type}
+                  </span>
                 </div>
               </div>
             );
