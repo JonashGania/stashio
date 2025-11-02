@@ -86,33 +86,39 @@ const TableCard = <TData, TValue>({
             ))}
           </TableHeader>
           <TableBody>
-            {table.getRowModel().rows.map((row) => (
-              <TableRow
-                key={row.id}
-                data-state={row.getIsSelected() && "selected"}
-                className="border-b-0 "
-              >
-                {row.getVisibleCells().map((cell) => {
-                  const hiddenClasses = ["type", "size", "createdAt"].includes(
-                    cell.column.id
-                  )
-                    ? "hidden phone:table-cell"
-                    : "";
+            {table.getRowModel().rows.map((row) => {
+              const file = row.original as { fileUrl: string };
+              return (
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && "selected"}
+                  className="border-b-0 "
+                  onDoubleClick={() => window.open(file.fileUrl, "_blank")}
+                >
+                  {row.getVisibleCells().map((cell) => {
+                    const hiddenClasses = [
+                      "type",
+                      "size",
+                      "createdAt",
+                    ].includes(cell.column.id)
+                      ? "hidden phone:table-cell"
+                      : "";
 
-                  return (
-                    <TableCell
-                      key={cell.id}
-                      className={`text-zinc-600 dark:text-gray-300 ${hiddenClasses}`}
-                    >
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  );
-                })}
-              </TableRow>
-            ))}
+                    return (
+                      <TableCell
+                        key={cell.id}
+                        className={`text-zinc-600 dark:text-gray-300 select-none ${hiddenClasses}`}
+                      >
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    );
+                  })}
+                </TableRow>
+              );
+            })}
           </TableBody>
         </Table>
       )}

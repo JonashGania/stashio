@@ -19,7 +19,7 @@ const SelectComponent = ({ sort, setSort }: SelectComponentProps) => {
       <Select value={sort} onValueChange={setSort}>
         <SelectTrigger
           id="sort-type"
-          className="w-[140px] sm:w-[180px] text-gray-700 dark:text-gray-300 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border border-white/20 dark:border-gray-700/50"
+          className="w-[140px] sm:w-[180px] text-gray-700 dark:text-gray-300 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border focus:ring-0 border-white/20 dark:border-gray-700/50 shadow-md"
         >
           <SelectValue />
         </SelectTrigger>

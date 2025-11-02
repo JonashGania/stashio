@@ -24,13 +24,13 @@ const StorageBar = ({
           Storage
         </span>
         <span className="text-xs text-gray-500 dark:text-gray-400">
-          {formatFileSize(Number(usedSpace))}/5 GB
+          {usedSpace ? formatFileSize(Number(usedSpace)) : "0 B"}/5 GB
         </span>
       </div>
       <div className="w-full h-2 bg-white/50 dark:bg-gray-700/50 rounded-full overflow-hidden">
         <div
           className="h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full transition-all duration-100 ease-out"
-          style={{ width: `${usedPercentage}%` }}
+          style={{ width: `${usedPercentage ? usedPercentage : 0}%` }}
         ></div>
       </div>
     </div>

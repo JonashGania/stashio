@@ -51,7 +51,7 @@ const DropdownAction = ({
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent
-        align="end"
+        align="center"
         className="w-48 shadow-zinc-400 shadow dark:shadow-none rounded-2xl py-2 px-0"
       >
         <DropdownMenuItem
