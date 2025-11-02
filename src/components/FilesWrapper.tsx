@@ -1,7 +1,7 @@
 "use client";
 
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Grid3X3, Rows2, LoaderCircle } from "lucide-react";
+import { Grid3X3, Rows2, LoaderCircle, Trash2 } from "lucide-react";
 import { getFiles } from "@/actions/files";
 import { FileType } from "@prisma/client";
 import { useInfiniteQuery } from "@tanstack/react-query";
@@ -45,6 +45,7 @@ const FilesWrapper = ({
   category: FileType;
 }) => {
   const [sort, setSort] = useState("date-newest");
+  const [selectedFiles, setSelectedFiles] = useState<string[]>([]);
 
   const searchParams = useSearchParams();
   const searchQuery = searchParams.get("search") || "";
@@ -104,10 +105,26 @@ const FilesWrapper = ({
     }
   });
 
+  const handleSelectAll = () => {
+    if (selectedFiles.length === sortedFiles.length) {
+      setSelectedFiles([]);
+    } else {
+      setSelectedFiles(sortedFiles.map((file) => file.id));
+    }
+  };
+
+  const handleSelectFile = (fileId: string) => {
+    setSelectedFiles((prev) =>
+      prev.includes(fileId)
+        ? prev.filter((id) => id !== fileId)
+        : [...prev, fileId]
+    );
+  };
+
   return (
     <Tabs defaultValue="grid">
       <div className="pt-4 flex justify-between gap-4 items-center">
-        <TabsList className="bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm h-12">
+        <TabsList className="bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm h-12 shadow-md">
           <TabsTrigger
             value="grid"
             className="flex items-center gap-2 px-3 py-2 rounded-lg transition-none 
@@ -126,7 +143,15 @@ const FilesWrapper = ({
           </TabsTrigger>
         </TabsList>
 
-        <SelectComponent sort={sort} setSort={setSort} />
+        {selectedFiles.length > 0 ? (
+          <div className="flex items-center justify-center px-4 py-2 rounded-xl bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm shadow-md">
+            <button>
+              <Trash2 size={20} className="text-red-500" />
+            </button>
+          </div>
+        ) : (
+          <SelectComponent sort={sort} setSort={setSort} />
+        )}
       </div>
       <TabsContent value="grid">
         <div className="pt-4">
@@ -145,7 +170,12 @@ const FilesWrapper = ({
             </div>
           ) : (
             <>
-              <GridCard files={sortedFiles} />
+              <GridCard
+                files={sortedFiles}
+                selectedFiles={selectedFiles}
+                handleSelectAll={handleSelectAll}
+                handleSelectFile={handleSelectFile}
+              />
               {sortedFiles.length >= 19 && (
                 <div ref={ref} className="flex justify-center items-center">
                   {isFetchingNextPage && (
