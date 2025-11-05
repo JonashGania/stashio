@@ -190,6 +190,71 @@ export const deleteFile = async (
   }
 };
 
+export const multipleDeleteFiles = async (
+  filesIds: string[],
+  userId: string | undefined
+) => {
+  const { storage } = await appwriteClient();
+
+  const session = await auth();
+  const user = session?.user;
+
+  if (!user) {
+    throw new Error("You are not authenticated perform this action");
+  }
+
+  try {
+    const files = await prisma.file.findMany({
+      where: {
+        id: { in: filesIds },
+      },
+      select: { id: true, size: true, fileId: true },
+    });
+
+    if (files.length === 0) {
+      return { success: false, message: "No valid files found to delete" };
+    }
+
+    const results = await Promise.allSettled(
+      files.map(async (file) => {
+        await storage.deleteFile(appwriteConfig.bucketId, file.fileId);
+        await prisma.file.delete({ where: { userId: userId, id: file.id } });
+        return file.size;
+      })
+    );
+
+    let totalFreedSpace = 0;
+    const failedFiles: string[] = [];
+
+    results.forEach((result, index) => {
+      if (result.status === "fulfilled") {
+        totalFreedSpace += result.value;
+      } else {
+        failedFiles.push(files[index].id);
+      }
+    });
+
+    if (totalFreedSpace > 0) {
+      await prisma.user.update({
+        where: { id: userId },
+        data: { usedSpace: { decrement: totalFreedSpace } },
+      });
+    }
+
+    if (failedFiles.length > 0) {
+      return {
+        success: false,
+        message: `Some files failed to delete: ${failedFiles.join(", ")}`,
+      };
+    }
+
+    return { success: true, message: "Selected files successfully deleted." };
+  } catch (error) {
+    console.error("Multiple delete failed:", error);
+    return { success: false, message: "Failed to delete selected files." };
+  }
+};
+
 export const getRecentUploaded = unstable_cache(
   async (userId: string | undefined) => {
     if (!userId) throw new Error("No userId provided");
