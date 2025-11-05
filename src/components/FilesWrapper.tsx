@@ -1,17 +1,18 @@
 "use client";
 
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Grid3X3, Rows2, LoaderCircle, Trash2 } from "lucide-react";
+import { Grid3X3, Rows2, LoaderCircle } from "lucide-react";
 import { getFiles } from "@/actions/files";
 import { FileType } from "@prisma/client";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useInView } from "react-intersection-observer";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { columns } from "./Columns";
+import { getColumns } from "./Columns";
 import SelectComponent from "@/components/Select";
 import GridCard from "./cards/GridCard";
 import TableCard from "./cards/TableCard";
+import DeleteSelectedButton from "./buttons/DeleteSelectedButton";
 
 interface FetchFilesProps {
   userId: string | undefined;
@@ -121,6 +122,13 @@ const FilesWrapper = ({
     );
   };
 
+  const columns = getColumns({
+    selectedFiles,
+    handleSelectAll,
+    handleSelectFile,
+    files: sortedFiles,
+  });
+
   return (
     <Tabs defaultValue="grid">
       <div className="pt-4 flex justify-between gap-4 items-center">
@@ -145,9 +153,12 @@ const FilesWrapper = ({
 
         {selectedFiles.length > 0 ? (
           <div className="flex items-center justify-center px-4 py-2 rounded-xl bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm shadow-md">
-            <button>
-              <Trash2 size={20} className="text-red-500" />
-            </button>
+            <DeleteSelectedButton
+              fileIds={selectedFiles}
+              userId={userId}
+              refetchFiles={refetch}
+              setSelectedFiles={setSelectedFiles}
+            />
           </div>
         ) : (
           <SelectComponent sort={sort} setSort={setSort} />
@@ -209,7 +220,11 @@ const FilesWrapper = ({
             </div>
           ) : (
             <>
-              <TableCard columns={columns} data={sortedFiles} />
+              <TableCard
+                columns={columns}
+                data={sortedFiles}
+                selectedFiles={selectedFiles}
+              />
               {sortedFiles.length >= 19 && (
                 <div ref={ref} className="flex justify-center items-center">
                   {isFetchingNextPage && (
