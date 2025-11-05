@@ -31,7 +31,9 @@ const DetailsDialog = ({ file }: { file: Files }) => {
       </DialogTrigger>
       <DialogContent className="max-w-[340px] phone:max-w-md">
         <DialogHeader>
-          <DialogTitle className="font-normal text-2xl">File info</DialogTitle>
+          <DialogTitle className="font-normal text-2xl ">
+            File Details
+          </DialogTitle>
         </DialogHeader>
         <DialogDescription></DialogDescription>
         <div className="pt-1">
@@ -46,7 +48,6 @@ const DetailsDialog = ({ file }: { file: Files }) => {
           </div>
 
           <div className="pt-6">
-            <h2 className="font-medium text-center">File Details</h2>
             <div className="pt-2 grid grid-cols-3 phone:grid-cols-4 gap-2 justify-items-center">
               <div className="flex items-center flex-col">
                 <h3 className="text-sm text-center">Created</h3>

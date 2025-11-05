@@ -72,7 +72,12 @@ const GridCard = ({
               return (
                 <div
                   key={file.id}
-                  className="group relative flex flex-col overflow-hidden rounded-2xl bg-white dark:bg-slate-800/50 border border-gray-200 dark:border-slate-700/50 hover:border-violet-300 dark:hover:border-violet-500/50 shadow-sm hover:shadow-xl hover:shadow-violet-500/10 transition-all duration-300 hover:-translate-y-1"
+                  className={`group relative flex flex-col overflow-hidden rounded-2xl border transition-all duration-300 hover:-translate-y-1 shadow-sm hover:shadow-xl hover:shadow-violet-500/10 bg-white dark:bg-slate-800/50
+                    ${
+                      isSelected
+                        ? "border-violet-400 dark:border-violet-500/50 -translate-y-1 shadow-xl shadow-violet-500/10"
+                        : " border-gray-200 dark:border-slate-700/50 hover:border-violet-400 dark:hover:border-violet-500/50"
+                    }`}
                 >
                   {/* Image/Icon Container */}
                   <Link
@@ -142,7 +147,7 @@ const GridCard = ({
                     >
                       <Checkbox
                         checked={isSelected}
-                        className="h-[14px] w-[14px] border-gray-500 dark:border-gray-400 p-2"
+                        className=" border-gray-500 dark:border-gray-400 p-2"
                         onCheckedChange={() => handleSelectFile(file.id)}
                       />
                     </div>

@@ -18,11 +18,13 @@ import {
 interface TableCardProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  selectedFiles: string[];
 }
 
 const TableCard = <TData, TValue>({
   columns,
   data,
+  selectedFiles,
 }: TableCardProps<TData, TValue>) => {
   const table = useReactTable({
     data,
@@ -71,7 +73,7 @@ const TableCard = <TData, TValue>({
                   return (
                     <TableHead
                       key={header.id}
-                      className={`text-black dark:text-gray-200 ${hiddenClasses}`}
+                      className={`text-black dark:text-gray-200 first:w-[40px] ${hiddenClasses}`}
                     >
                       {header.isPlaceholder
                         ? null
@@ -87,12 +89,13 @@ const TableCard = <TData, TValue>({
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows.map((row) => {
-              const file = row.original as { fileUrl: string };
+              const file = row.original as { fileUrl: string; id: string };
+              const isSelected = selectedFiles.includes(file.id);
               return (
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
-                  className="border-b-0 "
+                  className={`${isSelected ? "bg-muted/50" : ""}`}
                   onDoubleClick={() => window.open(file.fileUrl, "_blank")}
                 >
                   {row.getVisibleCells().map((cell) => {
