@@ -10,8 +10,47 @@ import {
 } from "@/lib/utils";
 import DropdownAction from "./DropdownAction";
 import Image from "next/image";
+import { Checkbox } from "./ui/checkbox";
 
-export const columns: ColumnDef<Files>[] = [
+interface ColumnsProps {
+  selectedFiles: string[];
+  handleSelectAll: () => void;
+  handleSelectFile: (fileId: string) => void;
+  files: Files[];
+}
+
+export const getColumns = ({
+  selectedFiles,
+  handleSelectAll,
+  handleSelectFile,
+}: ColumnsProps): ColumnDef<Files>[] => [
+  {
+    id: "select",
+    size: 10,
+    header: () => {
+      return (
+        <Checkbox
+          checked={selectedFiles.length > 0}
+          onCheckedChange={handleSelectAll}
+          aria-label="Select all"
+          className="border-gray-400 dark:border-gray-600 p-2"
+        />
+      );
+    },
+    cell: ({ row }) => {
+      const file = row.original;
+      const isSelected = selectedFiles.includes(file.id);
+
+      return (
+        <Checkbox
+          checked={isSelected}
+          onCheckedChange={() => handleSelectFile(file.id)}
+          aria-label={`Select row`}
+          className=" border-gray-400 dark:border-gray-600 p-2"
+        />
+      );
+    },
+  },
   {
     accessorKey: "name",
     header: "Name",
