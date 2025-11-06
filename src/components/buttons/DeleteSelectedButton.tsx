@@ -65,6 +65,8 @@ const DeleteSelectedButton = ({
           };
         }
       );
+
+      queryClient.invalidateQueries({ queryKey: ["searchFiles", userId] });
       setSelectedFiles([]);
       refetchFiles();
     } else {

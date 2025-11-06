@@ -320,34 +320,28 @@ export const getAvailabeStorage = unstable_cache(
   }
 );
 
-export const getSearchedFiles = unstable_cache(
-  async ({
-    search = "",
-    limit = 15,
-    userId,
-  }: {
-    search?: string;
-    limit?: number;
-    userId: string | undefined;
-  }) => {
-    if (!userId) throw new Error("No userId provided");
+export const getSearchedFiles = async ({
+  search = "",
+  limit = 15,
+  userId,
+}: {
+  search?: string;
+  limit?: number;
+  userId: string | undefined;
+}) => {
+  if (!userId) throw new Error("No userId provided");
 
-    const files = await prisma.file.findMany({
-      where: {
-        userId: userId,
-        name: {
-          contains: search,
-          mode: "insensitive",
-        },
+  const files = await prisma.file.findMany({
+    where: {
+      userId,
+      name: {
+        contains: search,
+        mode: "insensitive",
       },
-      orderBy: { createdAt: "desc" },
-      take: limit,
-    });
+    },
+    orderBy: { createdAt: "desc" },
+    take: limit,
+  });
 
-    return files;
-  },
-  ["searchResults"],
-  {
-    revalidate: 60 * 60 * 2,
-  }
-);
+  return files;
+};
